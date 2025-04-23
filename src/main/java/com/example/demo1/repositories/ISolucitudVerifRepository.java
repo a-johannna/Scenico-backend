@@ -12,6 +12,8 @@ public interface ISolucitudVerifRepository extends JpaRepository<SolicitudVerifi
         List<SolicitudVerificacion> findByEstado(EstadoSolicitud estado);
         List<SolicitudVerificacion> findByUsernameAndEstadoSolicitud(UserModel user, EstadoSolicitud estado);
 
+        List<SolicitudVerificacion> findByUser(UserModel user);
+
 
         UserModel getUser();
 }

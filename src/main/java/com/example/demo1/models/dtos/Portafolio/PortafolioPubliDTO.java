@@ -1,4 +1,4 @@
-package com.example.demo1.models.dtos;
+package com.example.demo1.models.dtos.Portafolio;
 
 import com.example.demo1.models.enums.TipoArchivo;
 import lombok.Getter;

@@ -2,13 +2,16 @@ package com.example.demo1.controllers;
 
 import com.example.demo1.mappers.PortafolioMapper;
 
+import com.example.demo1.models.dtos.ErrorResponseDTO;
+import com.example.demo1.models.dtos.Portafolio.PortafolioRequestDTO;
 import com.example.demo1.models.entidades.Portafolio;
-import com.example.demo1.models.dtos.PortafolioPubliDTO;
+import com.example.demo1.models.dtos.Portafolio.PortafolioPubliDTO;
 import com.example.demo1.models.enums.TipoArchivo;
 import com.example.demo1.repositories.IPortafolioRepository;
 import com.example.demo1.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,18 +27,24 @@ public class PortafolioController {
     private IUserRepository userRepository;
 
     @PostMapping("userModel/{idUser}")
-    public ResponseEntity<?> crearPortafolio(@PathVariable Long idUser, @RequestBody Portafolio nuevoContenido) {
+    public ResponseEntity<?> crearPortafolio(@PathVariable Long idUser, @RequestBody PortafolioRequestDTO requestDTO) {
         return userRepository.findById(idUser).map(userModel -> {
-            nuevoContenido.setUserModel(userModel);
-            return ResponseEntity.ok(portafolioRepository.save(nuevoContenido));
+          Portafolio nuevoPortafolio = PortafolioMapper.toEntity(requestDTO);
+          nuevoPortafolio.setUserModel(userModel);
+
+            return ResponseEntity.ok(portafolioRepository.save(nuevoPortafolio));
+
         }).orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("userModel/{idUser}")
-    public ResponseEntity<List<Portafolio>> obtenerPortafolioPorUsuario(@RequestParam Long idUser) {
+    public ResponseEntity<List<PortafolioPubliDTO>> obtenerPortafolioPorUsuario(@PathVariable Long idUser) {
         return userRepository.findById(idUser).map(userModel -> {
             List<Portafolio> portafolios = portafolioRepository.findByUserModel_Id(userModel);
-            return ResponseEntity.ok(portafolios);
+            List<PortafolioPubliDTO> dtos = portafolios.stream()
+                    .map(PortafolioMapper::toPubliDTO)
+                    .toList();
+            return ResponseEntity.ok(dtos);
         }).orElse(ResponseEntity.notFound().build());
 
     }
@@ -52,37 +61,29 @@ public class PortafolioController {
     }
 
     @GetMapping("/buscar")
-    public ResponseEntity<List<Portafolio>> buscarPorTipoArchivoAndEtiquetas(@RequestParam(required = false)TipoArchivo tipoArchivo, @RequestParam(required = false) String etiqueta) {
+    public ResponseEntity<List<PortafolioPubliDTO>> buscarPorTipoArchivoAndEtiquetas(@RequestParam(required = false)TipoArchivo tipoArchivo, @RequestParam(required = false) String etiqueta) {
 
+        List<Portafolio> portafolios;
         if (tipoArchivo != null && etiqueta != null) {
-            return ResponseEntity.ok(portafolioRepository.findbyTipoArchivoAndEtiquetasContainingIgnoreCase(tipoArchivo, etiqueta));
+            portafolios = portafolioRepository.findbyTipoArchivoAndEtiquetasContainingIgnoreCase(tipoArchivo, etiqueta);
         } else if (tipoArchivo != null) {
-            return ResponseEntity.ok(portafolioRepository.findByTipoArchivo(tipoArchivo));
+            portafolios = portafolioRepository.findByTipoArchivo(tipoArchivo);
         } else if (etiqueta != null) {
-            return ResponseEntity.ok(portafolioRepository.findByEtiquetasContainingIgnoreCase(etiqueta));
+            portafolios = portafolioRepository.findByEtiquetasContainingIgnoreCase(etiqueta);
         } else {
-            return ResponseEntity.ok(portafolioRepository.findAll());
+            portafolios = portafolioRepository.findAll();
         }
+        List<PortafolioPubliDTO> dtos = portafolios.stream()
+                .map(PortafolioMapper::toPubliDTO)
+                .toList();
+        return ResponseEntity.ok(dtos);
     }
 
 
-   /** public ResponseEntity<List<PortafolioPubliDTO>> obtenerPublicos(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Portafolio> publicos = portafolioRepository.findAll(pageable);
 
-        List<PortafolioPubliDTO> datos = publicos.stream().map(portafolio -> new PortafolioPubliDTO(
-                portafolio.getTitulo(),
-                portafolio.getIdPortafolio(),
-                portafolio.getDescripcion(),
-                portafolio.getTipoArchivo().name(),
-                portafolio.getUrlArchivo(),
-                portafolio.getEtiquetas(),
-                portafolio.getUserModel().getUsername()
-
-        )).toList();
-        return ResponseEntity.ok(datos);
-    }**/
-
+   /*+
+   Revisar, metodo redundante
+    */
     @GetMapping("/publicos")
     public ResponseEntity<List<PortafolioPubliDTO>> obtenerOportunidadesPublico(){
         List<Portafolio> listaPortafolios = portafolioRepository.findAll();
@@ -92,4 +93,10 @@ public class PortafolioController {
                 return ResponseEntity.ok(portlista);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        String message = ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponseDTO(message, "VALIDATION_ERROR"));
+    }
 }

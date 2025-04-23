@@ -1,4 +1,4 @@
-package com.example.demo1.models.dtos;
+package com.example.demo1.models.dtos.Oportunidad;
 
 
 import lombok.Getter;

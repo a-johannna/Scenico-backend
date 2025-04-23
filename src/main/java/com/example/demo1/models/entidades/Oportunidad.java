@@ -5,9 +5,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "oportunidades")
 public class Oportunidad {
@@ -38,83 +42,4 @@ public class Oportunidad {
     @JoinColumn(name = "idEmpresa")
     private UserModel usuarioEmpresa;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public String getRequisitos() {
-        return requisitos;
-    }
-
-    public void setRequisitos(String requisitos) {
-        this.requisitos = requisitos;
-    }
-
-    public String getUbicacion() {
-        return ubicacion;
-    }
-
-    public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
-    }
-
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
-    }
-
-    public LocalDateTime getFechaCierre() {
-        return fechaCierre;
-    }
-
-    public void setFechaCierre(LocalDateTime fechaCierre) {
-        this.fechaCierre = fechaCierre;
-    }
-
-    public EstadoOportunidad getEstadoOportunidad() {
-        return estadoOportunidad;
-    }
-
-    public void setEstadoOportunidad(EstadoOportunidad estadoOportunidad) {
-        this.estadoOportunidad = estadoOportunidad;
-    }
-
-    public UserModel getUsuarioEmpresa() {
-        return usuarioEmpresa;
-    }
-
-    public void setUsuarioEmpresa(UserModel usuarioEmpresa) {
-        this.usuarioEmpresa = usuarioEmpresa;
-    }
 }

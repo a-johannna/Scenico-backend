@@ -1,6 +1,6 @@
 package com.example.demo1.controllers;
 
-import com.example.demo1.models.dtos.OportunidadPublicDTO;
+import com.example.demo1.models.dtos.Oportunidad.OportunidadPublicDTO;
 import com.example.demo1.models.entidades.Oportunidad;
 import com.example.demo1.models.entidades.UserModel;
 import com.example.demo1.models.enums.EstadoOportunidad;
@@ -61,23 +61,6 @@ public class OportunidadController {
         return oportunidadRepository.findByCategoriaIgnoreCaseAndEstado(categoria, estadoOportunidad);
     }
 
-    /*@GetMapping("/publicas/manual")
-    public ResponseEntity<List<OportunidadPublicDTO>> listarOportunidades(){
-        List<Oportunidad> oportunidades = oportunidadRepository.findAll();
-        List<OportunidadPublicDTO> oportunidadesLista= oportunidades.stream().map(oportunidad -> new OportunidadPublicDTO(
-                oportunidad.getId(),
-                oportunidad.getTitulo(),
-                oportunidad.getDescripcion(),
-                oportunidad.getCategoria(),
-                oportunidad.getRequisitos(),
-                oportunidad.getUbicacion(),
-                oportunidad.getFechaCierre(),
-                oportunidad.getEstadoOportunidad().name(),
-                oportunidad.getUsuarioEmpresa().getUsername()
-        )).toList();
-
-        return ResponseEntity.ok(oportunidadesLista);
-    }*/
 
     @GetMapping("/publicas")
     public ResponseEntity<List<OportunidadPublicDTO>> listarOportunidadesPublico(){

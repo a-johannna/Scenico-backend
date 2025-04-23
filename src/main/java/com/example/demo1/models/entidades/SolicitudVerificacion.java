@@ -2,9 +2,13 @@ package com.example.demo1.models.entidades;
 
 import com.example.demo1.models.enums.EstadoSolicitud;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "solicitudes_verificaciones")
 public class SolicitudVerificacion
@@ -25,59 +29,4 @@ public class SolicitudVerificacion
     private String observacionesAdmin;
 
 
-    public Long getIdSolicitud() {
-        return idSolicitud;
-    }
-
-    public void setIdSolicitud(Long id) {
-        this.idSolicitud = id;
-    }
-
-    public UserModel getUser() {
-        return user;
-    }
-
-    public void setUser(UserModel user) {
-        this.user = user;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getArchivoDemoUrl() {
-        return archivoDemoUrl;
-    }
-
-    public void setArchivoDemoUrl(String archivoDemoUrl) {
-        this.archivoDemoUrl = archivoDemoUrl;
-    }
-
-    public LocalDateTime getDateSolicitud() {
-        return dateSolicitud;
-    }
-
-    public void setDateSolicitud(LocalDateTime dateSolicitud) {
-        this.dateSolicitud = dateSolicitud;
-    }
-
-    public EstadoSolicitud getEstadoSolicitud() {
-        return estadoSolicitud;
-    }
-
-    public void setEstadoSolicitud(EstadoSolicitud estadoSolicitud) {
-        this.estadoSolicitud = estadoSolicitud;
-    }
-
-    public String getObservacionesAdmin() {
-        return observacionesAdmin;
-    }
-
-    public void setObservacionesAdmin(String observacionesAdmin) {
-        this.observacionesAdmin = observacionesAdmin;
-    }
 }

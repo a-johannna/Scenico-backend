@@ -1,7 +1,7 @@
 package com.example.demo1.mappers;
 
 import com.example.demo1.models.entidades.Oportunidad;
-import com.example.demo1.models.dtos.OportunidadPublicDTO;
+import com.example.demo1.models.dtos.Oportunidad.OportunidadPublicDTO;
 
 public class OportunidadMapper {
     public static OportunidadPublicDTO toOportunidadPublicDTO(Oportunidad oportunidad) {

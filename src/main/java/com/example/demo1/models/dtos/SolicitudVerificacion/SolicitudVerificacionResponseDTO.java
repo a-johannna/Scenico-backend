@@ -1,4 +1,4 @@
-package com.example.demo1.models.dtos;
+package com.example.demo1.models.dtos.SolicitudVerificacion;
 
 import com.example.demo1.models.enums.EstadoSolicitud;
 import lombok.Getter;
