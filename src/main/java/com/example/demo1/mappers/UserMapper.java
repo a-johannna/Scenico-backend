@@ -3,10 +3,20 @@ package com.example.demo1.mappers;
 import com.example.demo1.models.dtos.UserModel.CreateUserDTO;
 import com.example.demo1.models.dtos.UserModel.UserModelDTO;
 import com.example.demo1.models.entidades.UserModel;
+import com.example.demo1.services.PasswordEncoderService;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+@Component
 public class UserMapper {
+
+    private final PasswordEncoderService passwordEncoderService;
+
+    public UserMapper(PasswordEncoderService passwordEncoderService) {
+        this.passwordEncoderService = passwordEncoderService;
+    }
+
     public static UserModelDTO toDTO(UserModel userModel)
     {
         UserModelDTO dto = new UserModelDTO();
@@ -35,7 +45,7 @@ public class UserMapper {
     public static UserModel toEntity(CreateUserDTO dto) {
         UserModel userModel = new UserModel();
         userModel.setUsername(dto.getUsername());
-        userModel.setPassword(dto.getPassword()); // Aquí deberías añadir encriptación
+        userModel.setPassword(passwordEncoderService.encodePassword(dto.getPassword()));
         userModel.setFirstName(dto.getFirstName());
         userModel.setLastName(dto.getLastName());
         userModel.setEmail(dto.getEmail());
