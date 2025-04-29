@@ -1,6 +1,7 @@
 package com.example.demo1.models.dtos.Oportunidad;
 
 
+import com.example.demo1.models.enums.EstadoOportunidad;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,24 +14,29 @@ public class OportunidadPublicDTO {
     private String titulo;
     private String descripcion;
     private String categoria;
-    private String requistos;
     private String ubicacion;
     private LocalDateTime fechaCierre;
-    private String estadoOportunidad;
+    private EstadoOportunidad estadoOportunidad;
     private String nombreEmpresa;
+    private boolean empresaVerificada;
+    private LocalDateTime fechaPublicacion;
+    private int diasRestantes;
 
-
-    public OportunidadPublicDTO(Long id, String titulo, String descripcion, String categoria, String requistos, String ubicacion, LocalDateTime fechaCierre, String estadoOportunidad, String nombreEmpresa) {
+    public OportunidadPublicDTO(Long id, String titulo, String descripcion, String categoria, String ubicacion, LocalDateTime fechaCierre, EstadoOportunidad estadoOportunidad, String nombreEmpresa, boolean empresaVerificada, LocalDateTime fechaPublicacion, int diasRestantes) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
-        this.requistos = requistos;
         this.ubicacion = ubicacion;
         this.fechaCierre = fechaCierre;
         this.estadoOportunidad = estadoOportunidad;
         this.nombreEmpresa = nombreEmpresa;
+        this.empresaVerificada = empresaVerificada;
+        this.fechaPublicacion = fechaPublicacion;
+        this.diasRestantes = diasRestantes;
     }
 
+    public OportunidadPublicDTO() {
 
+    }
 }
