@@ -1,110 +1,96 @@
 package com.example.demo1.controllers;
 
-import com.example.demo1.mappers.UserMapper;
+
 import com.example.demo1.models.dtos.UserModel.CreateUserDTO;
 import com.example.demo1.models.dtos.ErrorResponseDTO;
-import com.example.demo1.models.dtos.UserModel.UserModelDTO;
-import com.example.demo1.models.entidades.UserModel;
+import com.example.demo1.models.dtos.UserModel.UpdateUserDTO;
+import com.example.demo1.models.dtos.UserModel.UserResponseDTO;
 import com.example.demo1.repositories.IUserRepository;
+import com.example.demo1.services.RoleService;
+import com.example.demo1.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/userModel")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     @Autowired
-    private IUserRepository userRepository;
+    private final UserService userService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserModelDTO> getUserById(@PathVariable Long id) {
-        return userRepository.findById(id)
-                .map(UserMapper::toDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/uuid/{uuid}")
-    public ResponseEntity<UserModelDTO> getUserByUuid(@PathVariable UUID uuid) {
-        return userRepository.findByUuid(uuid)
-                .map(UserMapper::toDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
 
+    @GetMapping("/{uuid}")
+    public ResponseEntity<UserResponseDTO> getUserByUuid(@PathVariable UUID uuid) {
+        try {
+            UserResponseDTO user = userService.findByUuid(uuid);
+            return ResponseEntity.ok(user);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @GetMapping("/username/{username}")
-    public ResponseEntity<UserModelDTO> getUserByUsername(@PathVariable String username) {
-        return userRepository.findByUsername(username)
-                .map(UserMapper::toDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+
+    @GetMapping("/{username}")
+    public ResponseEntity<UserResponseDTO> getUserByUsername(@PathVariable String username) {
+      try {
+          UserResponseDTO userResponseDTO = userService.findByUsername(username);
+          return ResponseEntity.ok(userResponseDTO);
+
+      } catch (Exception e) {
+          return ResponseEntity.notFound().build();
+      }
     }
 
     @GetMapping
-    public List<UserModelDTO> listAllUsers() {
-        return userRepository.findAll().stream().map(UserMapper::toDTO).toList();
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        List<UserResponseDTO> userResponseDTOS = userService.getAllUsers();
+        return ResponseEntity.ok(userResponseDTOS);
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
-        if (userRepository.existsByEmail(createUserDTO.getEmail())) {
-            return ResponseEntity.badRequest()
-                    .body(new ErrorResponseDTO("Ya existe un usuario con este correo.","EMAIL_EXISTS"));
-        }
-        if (userRepository.existsByUsername(createUserDTO.getUsername())) {
-            return ResponseEntity.badRequest()
-                    .body(new ErrorResponseDTO("El nombre de usuario ya está en uso.","USERNAME_EXISTS"));
-        }
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
+        try {
+            UserResponseDTO createdUser = userService.createUser(createUserDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
 
-        UserModel userModel = UserMapper.toEntity(createUserDTO);
-        UserModel savedUser = userRepository.save(userModel);
-        return ResponseEntity.ok(UserMapper.toDTO(savedUser));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 
 
-    @PutMapping("/{id}")
-  public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody UserModelDTO newUserDTO) {
-      Optional<UserModel> userOpt = userRepository.findById(id);
+    @PutMapping("/{uuid}")
+  public ResponseEntity<?> updateUser(@PathVariable UUID uuid, @Valid @RequestBody UpdateUserDTO updateUser) {
 
-      if (userOpt.isEmpty()) {
-          return ResponseEntity.notFound().build();
-      }
-
-      UserModel userModel = userOpt.get();
-      if (!userModel.getEmail().equals(newUserDTO.getEmail()) &&
-      userRepository.existsByEmail(newUserDTO.getEmail())) {
-          return ResponseEntity.badRequest().body(new ErrorResponseDTO("Ya existe un usuario con este correo.", "EMAIL_EXISTS"));
-
-      }
-
-      userModel.setFirstName(newUserDTO.getFirstName());
-      userModel.setLastName(newUserDTO.getLastName());
-      userModel.setEmail(newUserDTO.getEmail());
-      userModel.setLocation(newUserDTO.getLocation());
-      userModel.setPhotoProfile(newUserDTO.getPhotoProfile());
-      userModel.setDescription(newUserDTO.getDescription());
-
-      UserModel savedUser = userRepository.save(userModel);
-      return ResponseEntity.ok(UserMapper.toDTO(savedUser));
+        try {
+            UserResponseDTO userResponseDTO = userService.updateUser(uuid,updateUser);
+            return ResponseEntity.ok(userResponseDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorResponseDTO("Error al actualizar el usuario", "ERROR_UPDATING_USER"));
+        }
   }
 
 
 
     @DeleteMapping({"/{id}"})
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        if (!userRepository.existsById(id)){
-            return ResponseEntity.notFound().build();
-        }
-        userRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID uuid) {
+      try {
+          userService.deleteUser(uuid);
+          return ResponseEntity.noContent().build();
+      } catch (IllegalStateException e) {
+          return ResponseEntity.badRequest().build();
+      }
     }
 }
 

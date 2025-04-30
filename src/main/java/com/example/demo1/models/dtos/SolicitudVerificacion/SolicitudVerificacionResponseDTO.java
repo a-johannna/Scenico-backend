@@ -11,16 +11,16 @@ import java.time.LocalDateTime;
 public class SolicitudVerificacionResponseDTO {
 
     private Long idSolicitud;
-    private String descrpcion;
+    private String descripcion;
     private String archivoDemoUrl;
     private LocalDateTime fechaSoclicitud;
     private EstadoSolicitud estadoSolicitud;
     private String observacionesAdmin;
     private String nombreUsuario;
 
-    public SolicitudVerificacionResponseDTO(Long idSolicitud, String descrpcion, String archivoDemoUrl, LocalDateTime fechaSoclicitud, EstadoSolicitud estadoSolicitud, String observacionesAdmin, String nombreUsuario) {
+    public SolicitudVerificacionResponseDTO(Long idSolicitud, String descripcion, String archivoDemoUrl, LocalDateTime fechaSoclicitud, EstadoSolicitud estadoSolicitud, String observacionesAdmin, String nombreUsuario) {
         this.idSolicitud = idSolicitud;
-        this.descrpcion = descrpcion;
+        this.descripcion = descripcion;
         this.archivoDemoUrl = archivoDemoUrl;
         this.fechaSoclicitud = fechaSoclicitud;
         this.estadoSolicitud = estadoSolicitud;

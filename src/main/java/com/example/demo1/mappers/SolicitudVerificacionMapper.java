@@ -1,6 +1,6 @@
 package com.example.demo1.mappers;
 
-import com.example.demo1.models.dtos.SolicitudVerificacion.SolicitudVerificacionDTO;
+import com.example.demo1.models.dtos.SolicitudVerificacion.SolicitudVerificacionRequestDTO;
 import com.example.demo1.models.dtos.SolicitudVerificacion.SolicitudVerificacionResponseDTO;
 import com.example.demo1.models.entidades.SolicitudVerificacion;
 
@@ -17,7 +17,7 @@ public class SolicitudVerificacionMapper {
                 solicitudVerif.getUser().getUsername()
         );
     }
-    public static SolicitudVerificacion toEntity(SolicitudVerificacionDTO dto) {
+    public static SolicitudVerificacion toEntity(SolicitudVerificacionRequestDTO dto) {
         SolicitudVerificacion solicitudVerif = new SolicitudVerificacion();
         solicitudVerif.setDescripcion(dto.getDescripcion());
         solicitudVerif.setArchivoDemoUrl(dto.getArchivoDemoUrl());
