@@ -8,8 +8,7 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Setter
-@Getter
+
 @Data
 public class UserModelPublicDTO {
     private UUID uuid;
