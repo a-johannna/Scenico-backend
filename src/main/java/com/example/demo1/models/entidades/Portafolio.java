@@ -28,7 +28,7 @@ public class Portafolio {
     private String etiquetas;
     private LocalDateTime fechaCreacion = LocalDateTime.now();
     @ManyToOne(optional = false)
-    @JoinColumn(name = "IdUser")
+    @JoinColumn(name = "id_user")
     private UserModel userModel;
 
 }

@@ -62,16 +62,20 @@ public class RoleService {
     }
 
     public void asignarRolInicial(UserModel user) {
-        Role roleUser = roleRepository.findByName(RoleName.ROLE_USER)
+        user.setTypeUser(TypeUser.USER);
+        Role role = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new IllegalStateException("Rol básico no encontrado"));
+        user.addRole(role);
         user.getRoles().clear();
-        user.getRoles().add(roleUser);
         user.setTypeUser(TypeUser.USER);
     }
 
     public boolean tienePermisosAdministrativos(UserModel user) {
-        return user.getRoles().stream()
-                .anyMatch(role -> role.getName() == RoleName.ROLE_ADMIN);
+      return user.hasRole(RoleName.ROLE_ADMIN);
+
+
     }
+
+
 
 }

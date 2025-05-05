@@ -3,8 +3,7 @@ package com.example.demo1.models.dtos.UserModel;
 import com.example.demo1.models.enums.TypeUser;
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
 
 import java.util.UUID;
 

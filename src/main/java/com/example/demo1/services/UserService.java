@@ -111,9 +111,5 @@ public class UserService {
         return userMapper.toResponseDTO(user);
     }
 
-    public UserResponseDTO findByUsernameIgnoreCase(String email) {
-        UserModel user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalStateException("No existe el usuario con el correo: " + email));
-        return userMapper.toResponseDTO(user);
-    }
+    
 }

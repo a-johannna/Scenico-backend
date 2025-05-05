@@ -24,10 +24,8 @@ import java.util.UUID;
 @Setter
 @Getter
 @Entity
-@Table(name = "users")
-/**
- * Entidad de usuario.
- */
+@Table(name = "user")
+
 public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,7 +82,8 @@ public class UserModel {
     }
 
     public boolean hasRole(RoleName roleName){
-        return roles.stream().anyMatch(r -> r.getName().equals(roleName));
+        return roles.stream().anyMatch(r -> r.getName() == roleName);
+
     }
 
 
