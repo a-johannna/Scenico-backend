@@ -1,6 +1,10 @@
 package com.example.demo1.models.dtos.UserModel;
 
+import com.example.demo1.models.enums.TypeUser;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -32,6 +36,9 @@ public class UpdateUserDTO {
 
     @Size(min = 4, max = 50)
     private String lastName;
+
+
+    private TypeUser typeUser;
 
 
 }

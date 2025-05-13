@@ -9,12 +9,12 @@ import java.util.List;
 
 public interface IPortafolioRepository extends JpaRepository<Portafolio, Long> {
 
-    List<Portafolio> findByUsername(UserModel username);
+   // List<Portafolio> findByUsername(UserModel username);
 //    List<Portafolio> findByTypeUser_Id(TypeUser idUser);
-    List<Portafolio> findByUserModel_Id(UserModel idUser);
+    List<Portafolio> findByUserModel(UserModel userModel);
     List<Portafolio> findByTipoArchivo(TipoArchivo tipoArchivo);
     List<Portafolio> findByEtiquetasContainingIgnoreCase(String etiquetas);
-    List<Portafolio> findbyTipoArchivoAndEtiquetasContainingIgnoreCase(TipoArchivo tipoArchivo, String etiquetas);
+    List<Portafolio> findByTipoArchivoAndEtiquetasContainingIgnoreCase(TipoArchivo tipoArchivo, String etiquetas);
 
 
 }

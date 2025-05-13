@@ -21,8 +21,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
-@Setter
 @Getter
+@Setter
 @Entity
 @Table(name = "user")
 
@@ -59,7 +59,7 @@ public class UserModel {
     @Enumerated(EnumType.STRING)
     private TypeUser typeUser;
 
-    private boolean verified = false;
+    private Boolean verified = false;
     private String location;
     @Pattern(regexp = "^(http|https)://.*$")
     private String photoProfile;
@@ -93,5 +93,10 @@ protected void onUpdate() {
 }
 
 
+    public Boolean isVerified() {
 
+            return Boolean.TRUE.equals(this.verified);
+
+
+    }
 }

@@ -5,7 +5,6 @@ import com.example.demo1.models.dtos.Oportunidad.CrearOportunidadDTO;
 import com.example.demo1.models.dtos.Oportunidad.OportunidadPublicDTO;
 import com.example.demo1.models.dtos.Oportunidad.OportunidadResponseDTO;
 import com.example.demo1.models.entidades.Oportunidad;
-import com.example.demo1.models.entidades.UserModel;
 import com.example.demo1.models.enums.EstadoOportunidad;
 import com.example.demo1.models.enums.TypeUser;
 import com.example.demo1.repositories.IOportunidadRepository;
@@ -18,7 +17,6 @@ import org.springframework.validation.method.MethodValidationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/oportunidades")
@@ -46,14 +44,14 @@ public class OportunidadController {
 
     }
 
-    @GetMapping
+    @GetMapping("/api/oportunidades/{id}")
     public ResponseEntity<OportunidadResponseDTO> obtenerOportunidadById(@PathVariable Long id) {
         return oportunidadRepository.findById(id)
                 .map(oportunidad -> ResponseEntity.ok(OportunidadMapper.toResponseDTO(oportunidad)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping
+    @GetMapping("/api/oportunidades")
     public ResponseEntity<List<OportunidadResponseDTO>> findAll() {
         List<OportunidadResponseDTO> oportunidades = oportunidadRepository.findAll().stream()
                 .map(OportunidadMapper:: toResponseDTO)
@@ -76,14 +74,10 @@ public class OportunidadController {
     }
 
     @GetMapping("/estadoOportunidad/{estadoOportunidad}")
-    /**
-     *  public List<Oportunidad> findByEstado(@PathVariable EstadoOportunidad estadoOportunidad){
-     *         return oportunidadRepository.findByEstadoOportunidad(estadoOportunidad);
-     *     }
-     */
+    /* public List<Oportunidad> findByEstado(@PathVariable EstadoOportunidad estadoOportunidad){return oportunidadRepository.findByEstadoOportunidad(estadoOportunidad); }*/
    public ResponseEntity<List<OportunidadResponseDTO>> findByEstado(@PathVariable EstadoOportunidad estadoOportunidad) {
        List<OportunidadResponseDTO> oportunidades = oportunidadRepository
-               .findByEstadoOportunidad(estadoOportunidad).stream()
+               .findByEstado(estadoOportunidad).stream()
                .map(OportunidadMapper::toResponseDTO)
                .toList();
        return ResponseEntity.ok(oportunidades);
@@ -139,7 +133,7 @@ public class OportunidadController {
     @ExceptionHandler(MethodValidationException.class)
     public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
-      String message = ex. getBindingResult().getAllErrors().get(0).getDefaultMessage();
+      String message = ex. getBindingResult().getAllErrors().getFirst().getDefaultMessage();
       return  ResponseEntity.badRequest()
               .body(new ErrorResponseDTO(message, "VALIDATION_ERROR"));
     }

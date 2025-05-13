@@ -5,16 +5,18 @@ import com.example.demo1.models.dtos.UserModel.CreateUserDTO;
 import com.example.demo1.models.dtos.ErrorResponseDTO;
 import com.example.demo1.models.dtos.UserModel.UpdateUserDTO;
 import com.example.demo1.models.dtos.UserModel.UserResponseDTO;
-import com.example.demo1.repositories.IUserRepository;
-import com.example.demo1.services.RoleService;
 import com.example.demo1.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -57,17 +59,19 @@ public class UserController {
         return ResponseEntity.ok(userResponseDTOS);
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
-        try {
-            UserResponseDTO createdUser = userService.createUser(createUserDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+    @PostMapping("/register")
+    public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserDTO dto, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            for (FieldError error : result.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+            return ResponseEntity.badRequest().body(errors);
         }
-    }
 
+        UserResponseDTO createdUser = userService.createUser(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
 
 
     @PutMapping("/{uuid}")
@@ -83,7 +87,7 @@ public class UserController {
 
 
 
-    @DeleteMapping({"/{id}"})
+    @DeleteMapping({"/{uuid}"})
     public ResponseEntity<Void> deleteUser(@PathVariable UUID uuid) {
       try {
           userService.deleteUser(uuid);

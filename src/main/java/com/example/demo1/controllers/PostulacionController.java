@@ -42,7 +42,7 @@ public class PostulacionController {
         if(artista.getTypeUser() != TypeUser.ARTIST) {
             return  ResponseEntity.status(403).body("Solo pueden artistas.");
         }
-        if(postulacionRepository.findByUsuarioArtistaYOportunidad(artista, oportunidad).isPresent()) {
+        if(postulacionRepository.findByUsuarioArtistaAndOportunidad(artista, oportunidad).isPresent()) {
             return ResponseEntity.badRequest().body("Han sido ocupadas todas las vacantes.");
         }
 

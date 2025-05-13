@@ -10,7 +10,7 @@ import java.util.List;
 public interface IOportunidadRepository extends JpaRepository<Oportunidad, Long> {
     List<Oportunidad> findByUsuarioEmpresa(UserModel empresa);
     List<Oportunidad> findByCategoriaIgnoreCase(String categoria);
-    List<Oportunidad> findByEstadoOportunidad(EstadoOportunidad estado);
+    List<Oportunidad> findByEstado(EstadoOportunidad estado);
     List<Oportunidad> findByCategoriaIgnoreCaseAndEstado(String categoria, EstadoOportunidad estado);
 
 }

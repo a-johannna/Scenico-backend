@@ -40,7 +40,7 @@ public class PortafolioController {
     @GetMapping("userModel/{idUser}")
     public ResponseEntity<List<PortafolioPubliDTO>> obtenerPortafolioPorUsuario(@PathVariable Long idUser) {
         return userRepository.findById(idUser).map(userModel -> {
-            List<Portafolio> portafolios = portafolioRepository.findByUserModel_Id(userModel);
+            List<Portafolio> portafolios = portafolioRepository.findByUserModel(userModel);
             List<PortafolioPubliDTO> dtos = portafolios.stream()
                     .map(PortafolioMapper::toPubliDTO)
                     .toList();
@@ -65,7 +65,7 @@ public class PortafolioController {
 
         List<Portafolio> portafolios;
         if (tipoArchivo != null && etiqueta != null) {
-            portafolios = portafolioRepository.findbyTipoArchivoAndEtiquetasContainingIgnoreCase(tipoArchivo, etiqueta);
+            portafolios = portafolioRepository.findByTipoArchivoAndEtiquetasContainingIgnoreCase(tipoArchivo, etiqueta);
         } else if (tipoArchivo != null) {
             portafolios = portafolioRepository.findByTipoArchivo(tipoArchivo);
         } else if (etiqueta != null) {

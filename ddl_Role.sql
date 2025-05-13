@@ -4,3 +4,5 @@ CREATE TABLE roles
     name VARCHAR(20)           NULL,
     CONSTRAINT pk_roles PRIMARY KEY (id)
 );
+
+INSERT INTO roles (name) VALUES ('USER');

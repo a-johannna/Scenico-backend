@@ -35,11 +35,13 @@ public class Oportunidad {
     private LocalDateTime fecha = LocalDateTime.now();
     @Future(message = "La fecha de cierre debe de ser posterior a la fecha actual.")
     private LocalDateTime fechaCierre;
+
+
     @Enumerated(EnumType.STRING)
-    private EstadoOportunidad estadoOportunidad = EstadoOportunidad.ABIERTO;
+    private EstadoOportunidad estado = EstadoOportunidad.ABIERTO;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idEmpresa")
+    @JoinColumn(name = "id_Empresa")
     private UserModel usuarioEmpresa;
 
 }

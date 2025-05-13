@@ -18,10 +18,10 @@ public class Postulacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idArtista")
+    @JoinColumn(name = "id_artista")
     private UserModel usuarioArtista;
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idOportunidad")
+    @JoinColumn(name = "id_oportunidad")
     private Oportunidad oportunidad;
     @Column(columnDefinition = "TEXT")
     private String mensaje;

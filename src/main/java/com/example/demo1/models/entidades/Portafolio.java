@@ -27,7 +27,7 @@ public class Portafolio {
     private String descripcionImagen;
     private String etiquetas;
     private LocalDateTime fechaCreacion = LocalDateTime.now();
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "id_user")
     private UserModel userModel;
 

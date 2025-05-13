@@ -37,7 +37,7 @@ public class UserMapper {
         dto.setTypeUser(userModel.getTypeUser().name());
         dto.setPhotoProfile(userModel.getPhotoProfile());
         dto.setDescription(userModel.getDescription());
-        dto.setVerified(userModel.isVerified() ? true : null);
+        dto.setVerified(Boolean.TRUE.equals(userModel.getVerified()));
         return dto;
     }
 
@@ -86,7 +86,7 @@ public class UserMapper {
             userModel.setDescription(dto.getDescription());
         }
         if (dto.getTypeUser() != null) {
-            userModel.setTypeUser(TypeUser.valueOf(dto.getTypeUser()));
+            userModel.setTypeUser(dto.getTypeUser());
         }
         userModel.setUpdateAt(LocalDateTime.now());
     }

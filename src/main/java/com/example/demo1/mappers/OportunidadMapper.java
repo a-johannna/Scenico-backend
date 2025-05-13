@@ -22,7 +22,7 @@ public class OportunidadMapper {
         dto.setUbicacion(oportunidad.getUbicacion());
         dto.setFecha(oportunidad.getFecha());
         dto.setFechaCierre(oportunidad.getFechaCierre());
-        dto.setEstadoOportunidad(oportunidad.getEstadoOportunidad());
+        dto.setEstadoOportunidad(oportunidad.getEstado());
 
         OportunidadResponseDTO.UserInfoDTO userInfo = getUserInfoDTO(oportunidad);
 
@@ -38,7 +38,7 @@ public class OportunidadMapper {
         UserModel empresa = oportunidad.getUsuarioEmpresa();
         userInfo.setUsername(empresa.getUsername());
         userInfo.setEmail(empresa.getEmail());
-        userInfo.setVerified(empresa.isVerified());
+        userInfo.setVerified(Boolean.TRUE.equals(empresa.isVerified()));
         userInfo.setFirstName(empresa.getFirstName());
         userInfo.setLastName(empresa.getLastName());
         userInfo.setLocation(empresa.getPhotoProfile());
@@ -55,7 +55,7 @@ public class OportunidadMapper {
         oportunidad.setUbicacion(dto.getUbicacion());
         oportunidad.setFechaCierre(dto.getFechaCierre());
         oportunidad.setFecha((LocalDateTime.now()));
-        oportunidad.setEstadoOportunidad(EstadoOportunidad.ABIERTO);
+        oportunidad.setEstado(EstadoOportunidad.ABIERTO);
 
         return oportunidad;
     }
@@ -68,7 +68,7 @@ public class OportunidadMapper {
       dto.setCategoria(oportunidad.getCategoria());
       dto.setUbicacion(oportunidad.getUbicacion());
       dto.setFechaCierre(oportunidad.getFechaCierre());
-      dto.setEstadoOportunidad(oportunidad.getEstadoOportunidad());
+      dto.setEstadoOportunidad(oportunidad.getEstado());
       dto.setNombreEmpresa(oportunidad.getUsuarioEmpresa().getUsername());
       dto.setEmpresaVerificada(oportunidad.getUsuarioEmpresa().isVerified());
       dto.setFechaPublicacion(oportunidad.getFecha());
