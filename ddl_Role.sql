@@ -6,3 +6,6 @@ CREATE TABLE roles
 );
 
 INSERT INTO roles (name) VALUES ('USER');
+
+
+select * from user;
