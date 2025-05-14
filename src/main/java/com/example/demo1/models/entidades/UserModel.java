@@ -31,7 +31,7 @@ public class UserModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;   // ID interno de la base de datos.
     @Column(name ="uuid", unique = true, nullable = false, updatable = false)
-    private UUID uuid;//ID externo de la base de datos.(Público)
+    private UUID uuid;// externo de la base de datos.(Público)
     @PrePersist
     protected void onCreate() {
         if (uuid == null) {

@@ -7,6 +7,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+
 @Service
 public class AuthenticationService {
 
@@ -19,12 +22,17 @@ public class AuthenticationService {
         this.userRepository = userRepository;
     }
 
-    public UserModel authenticate(String username, String password) {
+    public UserModel authenticate(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(username, password)
+            new UsernamePasswordAuthenticationToken(email, password)
         );
         
-        return userRepository.findByUsername(username)
-            .orElseThrow(() -> new IllegalStateException("Usuario no encontrado: " + username));
+        return userRepository.findByEmail(email)
+            .orElseThrow(() -> new IllegalStateException("Email  no encontrado: " + email));
     }
+
+    public Optional<UserModel> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
 }
