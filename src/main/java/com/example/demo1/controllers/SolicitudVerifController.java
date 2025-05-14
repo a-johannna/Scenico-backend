@@ -130,7 +130,7 @@ public class SolicitudVerifController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        String message = ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
+        String message = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         return ResponseEntity.badRequest()
                 .body(new ErrorResponseDTO(message, "VALIDATION_ERROR"));
     }
