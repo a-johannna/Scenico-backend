@@ -60,29 +60,6 @@ public class AuthController {
 
     }
 
-  /*  @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-
-        // Busca el usuario
-        UserModel user = IUserRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró un usuario con ese email."));
-
-        // Genera un token
-        String token = UUID.randomUUID().toString();
-        user.setResetToken(token);
-        user.setTokenExpiry(LocalDateTime.now().plusMinutes(30));
-        userRepository.save(user);
-
-        // Envía el email
-        String link = "http://localhost:4200/auth/reset-password?token=" + token;
-        emailService.send(email, "Recupera tu contraseña", "Haz clic aquí: " + link);
-
-        return ResponseEntity.ok("Correo de recuperación enviado");
-    }
-
-   */
-
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody LoginRequestDTO request) {
         UserModel user = authenticationService.findByEmail(request.getEmail())
