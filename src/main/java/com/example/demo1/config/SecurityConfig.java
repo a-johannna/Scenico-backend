@@ -23,7 +23,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -55,6 +54,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST,"/api/v1/users/register").permitAll()
                     .requestMatchers(HttpMethod.POST,"/api/v1/users/login").permitAll()
                     .requestMatchers("/api/v1/users/forgot-password").permitAll()
+                    .requestMatchers(HttpMethod.GET,"/api/v1/users/**").permitAll()
+                    .requestMatchers(HttpMethod.PUT,"/api/v1/users/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE,"/api/v1/users/**").permitAll()
                     .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated())
             .authenticationProvider(authenticationProvider())

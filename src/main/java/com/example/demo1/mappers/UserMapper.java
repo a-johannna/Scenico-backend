@@ -4,12 +4,10 @@ import com.example.demo1.models.dtos.UserModel.CreateUserDTO;
 import com.example.demo1.models.dtos.UserModel.UpdateUserDTO;
 import com.example.demo1.models.dtos.UserModel.UserResponseDTO;
 import com.example.demo1.models.entidades.UserModel;
-import com.example.demo1.models.enums.TypeUser;
 import com.example.demo1.services.PasswordEncoderService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Component
 public class UserMapper {
@@ -47,12 +45,13 @@ public class UserMapper {
         UserModel userModel = new UserModel();
         userModel.setUsername(dto.getUsername());
         userModel.setPassword(passwordEncoderService.encodePassword(dto.getPassword()));
+        userModel.setFirstName(dto.getFirstName());
         userModel.setLastName(dto.getLastName());
         userModel.setEmail(dto.getEmail());
         userModel.setLocation(dto.getLocation());
         userModel.setPhotoProfile(dto.getPhotoProfile());
         userModel.setDescription(dto.getDescription());
-        userModel.setTypeUser(dto.getTypeUser());
+       // userModel.setTypeUser(dto.getTypeUser());
         userModel.setVerified(false);
         userModel.setCreatedAt(LocalDateTime.now());
         userModel.setUpdateAt(LocalDateTime.now());

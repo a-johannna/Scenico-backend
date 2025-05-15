@@ -2,7 +2,6 @@ package com.example.demo1.models.entidades;
 
 import com.example.demo1.models.entidades.Rols.Role;
 import com.example.demo1.models.enums.RoleName;
-import com.example.demo1.models.enums.TypeUser;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -57,7 +56,7 @@ public class UserModel {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private TypeUser typeUser;
+    private RoleName typeUser;
 
     private Boolean verified = false;
     private String location;

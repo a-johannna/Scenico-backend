@@ -1,6 +1,6 @@
 package com.example.demo1.models.dtos.SolicitudVerificacion;
 
-import com.example.demo1.models.enums.TypeUser;
+import com.example.demo1.models.enums.RoleName;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -18,9 +18,9 @@ public class SolicitudVerificacionRequestDTO {
     private String archivoDemoUrl;
 
     @NotBlank(message = "Debe especificar el rol")
-    private TypeUser rolSolicitado;
+    private RoleName rolSolicitado;
 
-    public SolicitudVerificacionRequestDTO(String descripcion, String archivoDemoUrl, TypeUser rolSolicitado) {
+    public SolicitudVerificacionRequestDTO(String descripcion, String archivoDemoUrl, RoleName rolSolicitado) {
         this.descripcion = descripcion;
         this.archivoDemoUrl = archivoDemoUrl;
         this.rolSolicitado = rolSolicitado;

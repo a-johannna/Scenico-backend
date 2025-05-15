@@ -1,6 +1,6 @@
 package com.example.demo1.models.dtos.UserModel;
 
-import com.example.demo1.models.enums.TypeUser;
+
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,8 +33,8 @@ public class CreateUserDTO{
             message = "La contraseña debe tener al menos 8 caracteres, una letra y un número")
     private String password;
 
-    @NotNull(message = "El tipo de usuario es obligatorio")
-    private TypeUser typeUser = TypeUser.USER;
+    //@NotNull(message = "El tipo de usuario es obligatorio")
+    //private TypeUser typeUser = TypeUser.USER;   //Creo que deberismo quitarlo
 
     @Pattern(regexp = "^(http|https)://.*$")
     private String photoProfile;

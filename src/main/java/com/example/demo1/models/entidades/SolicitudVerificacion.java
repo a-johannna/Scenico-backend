@@ -1,7 +1,7 @@
 package com.example.demo1.models.entidades;
 
 import com.example.demo1.models.enums.EstadoSolicitud;
-import com.example.demo1.models.enums.TypeUser;
+import com.example.demo1.models.enums.RoleName;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +39,7 @@ public class SolicitudVerificacion
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TypeUser rolSolicitado;
+    private RoleName rolSolicitado;
 
 
 }

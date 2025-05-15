@@ -6,7 +6,7 @@ import com.example.demo1.models.dtos.Oportunidad.OportunidadPublicDTO;
 import com.example.demo1.models.dtos.Oportunidad.OportunidadResponseDTO;
 import com.example.demo1.models.entidades.Oportunidad;
 import com.example.demo1.models.enums.EstadoOportunidad;
-import com.example.demo1.models.enums.TypeUser;
+import com.example.demo1.models.enums.RoleName;
 import com.example.demo1.repositories.IOportunidadRepository;
 import com.example.demo1.repositories.IUserRepository;
 import com.example.demo1.mappers.OportunidadMapper;
@@ -31,7 +31,7 @@ public class OportunidadController {
 
         return  userRepository.findById(idEmpresa)
                 .map(empresaUser -> {
-                    if (empresaUser.getTypeUser() != TypeUser.ENTERPRISE) {
+                    if (empresaUser.getTypeUser() != RoleName.EMPRESA) {
                         return  ResponseEntity.status(403)
                                 .body(new ErrorResponseDTO("Solo acceso para Empresas", "FORBIDDEN"));
                     }

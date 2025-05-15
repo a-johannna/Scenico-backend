@@ -1,7 +1,6 @@
 package com.example.demo1.models.dtos.UserModel;
 
-import com.example.demo1.models.enums.TypeUser;
-import jakarta.persistence.EnumType;
+import com.example.demo1.models.enums.RoleName;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -38,7 +37,7 @@ public class UpdateUserDTO {
     private String lastName;
 
 
-    private TypeUser typeUser;
+    private RoleName typeUser;
 
 
 }

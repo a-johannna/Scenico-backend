@@ -3,12 +3,13 @@ package com.example.demo1.services;
 import com.example.demo1.models.entidades.Rols.Role;
 import com.example.demo1.models.entidades.UserModel;
 import com.example.demo1.models.enums.RoleName;
-import com.example.demo1.models.enums.TypeUser;
 import com.example.demo1.repositories.IRoleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.example.demo1.models.enums.RoleName.EMPRESA;
 
 @Service
 public class RoleService {
@@ -19,29 +20,29 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    public void actualizarRolesSegunTipo(UserModel user, TypeUser nuevoTipo) {
+    public void actualizarRolesSegunTipo(UserModel user, RoleName nuevoTipo) {
         // Mantener el rol básico de usuario
         Set<Role> nuevosRoles = new HashSet<>();
-        Role roleUser = roleRepository.findByName(RoleName.ROLE_USER)
+        Role roleUser = roleRepository.findByName(RoleName.USER)
                 .orElseThrow(() -> new IllegalStateException("Rol básico no encontrado"));
         nuevosRoles.add(roleUser);
 
         // Asignar roles adicionales según el tipo
         switch (nuevoTipo) {
             case ARTIST:
-                Role roleArtist = roleRepository.findByName(RoleName.ROLE_ARTISTA)
+                Role roleArtist = roleRepository.findByName(RoleName.ARTIST)
                         .orElseThrow(() -> new IllegalStateException("Rol de artista no encontrado"));
                 nuevosRoles.add(roleArtist);
                 break;
 
-            case ENTERPRISE:
-                Role roleEmpresa = roleRepository.findByName(RoleName.ROLE_EMPRESA)
+            case EMPRESA:
+                Role roleEmpresa = roleRepository.findByName(EMPRESA)
                         .orElseThrow(() -> new IllegalStateException("Rol de empresa no encontrado"));
                 nuevosRoles.add(roleEmpresa);
                 break;
 
             case ADMIN:
-                Role roleAdmin = roleRepository.findByName(RoleName.ROLE_ADMIN)
+                Role roleAdmin = roleRepository.findByName(RoleName.ADMIN)
                         .orElseThrow(() -> new IllegalStateException("Rol de administrador no encontrado"));
                 // Para admin, mantenemos los roles previos y añadimos el de admin
                 nuevosRoles.addAll(user.getRoles());
@@ -62,12 +63,12 @@ public class RoleService {
     }
 
     public void asignarRolInicial(UserModel user) {
-        user.setTypeUser(TypeUser.USER);
+        user.setTypeUser(RoleName.USER);
 
-        Role role = roleRepository.findByName(RoleName.ROLE_USER)
+        Role role = roleRepository.findByName(RoleName.USER)
                 .orElseGet(() -> {
                     Role nuevo = new Role();
-                    nuevo.setName(RoleName.ROLE_USER);
+                    nuevo.setName(RoleName.USER);
                     return roleRepository.save(nuevo);
                 });
 
@@ -77,7 +78,7 @@ public class RoleService {
 
 
     public boolean tienePermisosAdministrativos(UserModel user) {
-      return user.hasRole(RoleName.ROLE_ADMIN);
+      return user.hasRole(RoleName.ADMIN);
 
 
     }

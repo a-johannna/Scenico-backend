@@ -6,7 +6,6 @@ import com.example.demo1.models.dtos.UserModel.CreateUserDTO;
 import com.example.demo1.models.dtos.UserModel.UpdateUserDTO;
 import com.example.demo1.models.dtos.UserModel.UserResponseDTO;
 import com.example.demo1.models.entidades.UserModel;
-import com.example.demo1.models.enums.TypeUser;
 import com.example.demo1.repositories.IUserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,7 @@ public class UserService {
             throw new IllegalStateException("Ya existe un usuario con este nombre de usuario.");
         }
 
-        createUserDTO.setTypeUser(TypeUser.USER);
+        //createUserDTO.setTypeUser(TypeUser.USER);
         UserModel userModel = userMapper.toEntity(createUserDTO);
         userModel.setUuid(UUID.randomUUID());
 
@@ -47,12 +46,14 @@ public class UserService {
         userModel = userRepository.save(userModel);
         return userMapper.toResponseDTO(userModel);
     }
-
-    public UserResponseDTO getUserById(Long id) {
+/*
+    public UserResponseDTO getUserById(Long id) {               No tiene usos por el momento
         UserModel userModel = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("No existe el usuario con el id: " + id));
         return userMapper.toResponseDTO(userModel);
     }
+
+ */
 
     public UserResponseDTO findByUuid(UUID uuid) {
         UserModel user = userRepository.findByUuid(uuid)
