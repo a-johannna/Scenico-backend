@@ -7,7 +7,6 @@ import com.example.demo1.models.dtos.UserModel.UpdateUserDTO;
 import com.example.demo1.models.dtos.UserModel.UserResponseDTO;
 import com.example.demo1.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -23,7 +22,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-    @Autowired
+
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -31,7 +30,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/{uuid}")
+    @GetMapping("/uuid/{uuid}")
     public ResponseEntity<UserResponseDTO> getUserByUuid(@PathVariable UUID uuid) {
         try {
             UserResponseDTO user = userService.findByUuid(uuid);
@@ -42,7 +41,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public ResponseEntity<UserResponseDTO> getUserByUsername(@PathVariable String username) {
       try {
           UserResponseDTO userResponseDTO = userService.findByUsername(username);
@@ -74,7 +73,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/{uuid}")
+    @PutMapping("/uuid/{uuid}")
   public ResponseEntity<?> updateUser(@PathVariable UUID uuid, @Valid @RequestBody UpdateUserDTO updateUser) {
 
         try {
@@ -87,7 +86,7 @@ public class UserController {
 
 
 
-    @DeleteMapping({"/{uuid}"})
+    @DeleteMapping({"/uuid/{uuid}"})
     public ResponseEntity<Void> deleteUser(@PathVariable UUID uuid) {
       try {
           userService.deleteUser(uuid);
