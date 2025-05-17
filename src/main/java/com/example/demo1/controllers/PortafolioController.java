@@ -6,10 +6,14 @@ import com.example.demo1.models.dtos.ErrorResponseDTO;
 import com.example.demo1.models.dtos.Portafolio.PortafolioRequestDTO;
 import com.example.demo1.models.entidades.Portafolio;
 import com.example.demo1.models.dtos.Portafolio.PortafolioPubliDTO;
+import com.example.demo1.models.entidades.UserModel;
 import com.example.demo1.models.enums.TipoArchivo;
 import com.example.demo1.repositories.IPortafolioRepository;
 import com.example.demo1.repositories.IUserRepository;
+import com.example.demo1.services.PortafolioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/portafolios")
+@RequestMapping("api/v1/portafolios")
 public class PortafolioController {
 
     @Autowired
@@ -26,16 +30,51 @@ public class PortafolioController {
     @Autowired
     private IUserRepository userRepository;
 
-    @PostMapping("userModel/{idUser}")
-    public ResponseEntity<?> crearPortafolio(@PathVariable Long idUser, @RequestBody PortafolioRequestDTO requestDTO) {
-        return userRepository.findById(idUser).map(userModel -> {
-          Portafolio nuevoPortafolio = PortafolioMapper.toEntity(requestDTO);
-          nuevoPortafolio.setUserModel(userModel);
+    private final PortafolioService portafolioService;
 
-            return ResponseEntity.ok(portafolioRepository.save(nuevoPortafolio));
 
-        }).orElse(ResponseEntity.notFound().build());
+
+    public PortafolioController(PortafolioService portafolioService) {
+        this.portafolioService = portafolioService;
+
     }
+
+//    @PostMapping("userModel/{idUser}")
+//    public ResponseEntity<?> crearPortafolio(@PathVariable Long idUser, @RequestBody PortafolioRequestDTO requestDTO) {
+//        return userRepository.findById(idUser).map(userModel -> {
+//          Portafolio nuevoPortafolio = PortafolioMapper.toEntity(requestDTO);
+//          nuevoPortafolio.setUserModel(userModel);
+//
+//            return ResponseEntity.ok(portafolioRepository.save(nuevoPortafolio));
+//
+//        }).orElse(ResponseEntity.notFound().build());
+//    }
+
+    @PostMapping("userModel/{id_User}")
+    public ResponseEntity<?> crearPortafolio(@PathVariable Long id_User,
+                                             @Valid @RequestBody PortafolioRequestDTO requestDTO) {
+        return userRepository.findById(id_User).map(user -> {
+            try {
+                PortafolioPubliDTO creado = portafolioService.crearPortafolio(requestDTO, user);
+                return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Error al crear portafolio: " + e.getMessage());
+            }
+        }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado"));
+    }
+
+//    @PostMapping
+//    public ResponseEntity<?> crearPortafolio(@RequestBody @Valid PortafolioRequestDTO dto) {
+//        UUID uuid = jwtTokenService.getCurrentUserUuid();
+//        UserModel user = userService.getByUuid(uuid);
+//
+//        Portafolio nuevo = portafolioService.crearPortafolio(dto, user);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(PortafolioMapper.toPubliDTO(nuevo));
+//    }
+
+
+
+
 
     @GetMapping("userModel/{idUser}")
     public ResponseEntity<List<PortafolioPubliDTO>> obtenerPortafolioPorUsuario(@PathVariable Long idUser) {
@@ -84,7 +123,7 @@ public class PortafolioController {
    /*+
    Revisar, metodo redundante
     */
-    @GetMapping("/publicos")
+    @GetMapping
     public ResponseEntity<List<PortafolioPubliDTO>> obtenerOportunidadesPublico(){
         List<Portafolio> listaPortafolios = portafolioRepository.findAll();
         List<PortafolioPubliDTO> portlista = listaPortafolios.stream()

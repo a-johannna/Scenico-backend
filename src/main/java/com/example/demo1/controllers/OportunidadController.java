@@ -62,34 +62,34 @@ public class OportunidadController {
 
     @GetMapping("/categoria/{categoria}")
 
-   public ResponseEntity<List<OportunidadResponseDTO>> findByCategoriaIgnoreCase(@PathVariable String categoria) {
-       List<OportunidadResponseDTO> oportunidades = oportunidadRepository
-               .findByCategoriaIgnoreCase(categoria).stream()
-               .map(OportunidadMapper::toResponseDTO)
-               .toList();
-       return  ResponseEntity.ok(oportunidades);
+    public ResponseEntity<List<OportunidadResponseDTO>> findByCategoriaIgnoreCase(@PathVariable String categoria) {
+        List<OportunidadResponseDTO> oportunidades = oportunidadRepository
+                .findByCategoriaIgnoreCase(categoria).stream()
+                .map(OportunidadMapper::toResponseDTO)
+                .toList();
+        return  ResponseEntity.ok(oportunidades);
     }
 
     @GetMapping("/estadoOportunidad/{estadoOportunidad}")
     /* public List<Oportunidad> findByEstado(@PathVariable EstadoOportunidad estadoOportunidad){return oportunidadRepository.findByEstadoOportunidad(estadoOportunidad); }*/
-   public ResponseEntity<List<OportunidadResponseDTO>> findByEstado(@PathVariable EstadoOportunidad estadoOportunidad) {
-       List<OportunidadResponseDTO> oportunidades = oportunidadRepository
-               .findByEstado(estadoOportunidad).stream()
-               .map(OportunidadMapper::toResponseDTO)
-               .toList();
-       return ResponseEntity.ok(oportunidades);
+    public ResponseEntity<List<OportunidadResponseDTO>> findByEstado(@PathVariable EstadoOportunidad estadoOportunidad) {
+        List<OportunidadResponseDTO> oportunidades = oportunidadRepository
+                .findByEstado(estadoOportunidad).stream()
+                .map(OportunidadMapper::toResponseDTO)
+                .toList();
+        return ResponseEntity.ok(oportunidades);
     }
 
     @GetMapping("/buscar")
 
-  public ResponseEntity<List<OportunidadResponseDTO>> findByCategoriaAndEstado(
-          @RequestParam String categoria, @RequestParam EstadoOportunidad estadoOportunidad
+    public ResponseEntity<List<OportunidadResponseDTO>> findByCategoriaAndEstado(
+            @RequestParam String categoria, @RequestParam EstadoOportunidad estadoOportunidad
     ) {
-      List<OportunidadResponseDTO> oportunidades = oportunidadRepository
-              .findByCategoriaIgnoreCaseAndEstado(categoria, estadoOportunidad).stream()
-              .map(OportunidadMapper::toResponseDTO)
-              .toList();
-      return ResponseEntity.ok(oportunidades);
+        List<OportunidadResponseDTO> oportunidades = oportunidadRepository
+                .findByCategoriaIgnoreCaseAndEstado(categoria, estadoOportunidad).stream()
+                .map(OportunidadMapper::toResponseDTO)
+                .toList();
+        return ResponseEntity.ok(oportunidades);
     }
 
 
@@ -105,30 +105,30 @@ public class OportunidadController {
     public ResponseEntity<?> actualizarOportunidad(
             @PathVariable Long id,
             @Valid @RequestBody CrearOportunidadDTO dto) {
-      return  oportunidadRepository.findById(id)
-              .map(oportunidad -> {
-                  OportunidadMapper.updateFromDTO(oportunidad,dto);
-                  Oportunidad updated = oportunidadRepository.save(oportunidad);
-                  return ResponseEntity.ok(OportunidadMapper.toResponseDTO(updated));
-              }).orElse(ResponseEntity.notFound().build());
+        return  oportunidadRepository.findById(id)
+                .map(oportunidad -> {
+                    OportunidadMapper.updateFromDTO(oportunidad,dto);
+                    Oportunidad updated = oportunidadRepository.save(oportunidad);
+                    return ResponseEntity.ok(OportunidadMapper.toResponseDTO(updated));
+                }).orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminarOportunidad(@PathVariable Long id) {
-      return oportunidadRepository.findById(id)
-              .map(oportunidad ->  {
-                  oportunidadRepository.delete(oportunidad);
-                  return ResponseEntity.ok().build();
-              })
-              .orElse(ResponseEntity.notFound().build());
+        return oportunidadRepository.findById(id)
+                .map(oportunidad ->  {
+                    oportunidadRepository.delete(oportunidad);
+                    return ResponseEntity.ok().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @ExceptionHandler(MethodValidationException.class)
     public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
-      String message = ex. getBindingResult().getAllErrors().get(0).getDefaultMessage();
-      return  ResponseEntity.badRequest()
-              .body(new ErrorResponseDTO(message, "VALIDATION_ERROR"));
+        String message = ex. getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        return  ResponseEntity.badRequest()
+                .body(new ErrorResponseDTO(message, "VALIDATION_ERROR"));
     }
 
 

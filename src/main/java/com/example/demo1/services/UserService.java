@@ -48,11 +48,11 @@ public class UserService {
         return userMapper.toResponseDTO(userModel);
     }
 
-    public UserResponseDTO getUserById(Long id) {
-        UserModel userModel = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("No existe el usuario con el id: " + id));
-        return userMapper.toResponseDTO(userModel);
+    public UserModel getByUuid(UUID uuid) {
+        return userRepository.findByUuid(uuid)
+                .orElseThrow(() -> new IllegalStateException("Usuario no encontrado con UUID: " + uuid));
     }
+
 
     public UserResponseDTO findByUuid(UUID uuid) {
         UserModel user = userRepository.findByUuid(uuid)

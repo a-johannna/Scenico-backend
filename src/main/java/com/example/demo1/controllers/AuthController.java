@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -38,8 +36,8 @@ public class AuthController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO loginRequest) {
         try {
             UserModel user = authenticationService.authenticate(
-                loginRequest.getEmail(),
-                loginRequest.getPassword()
+                    loginRequest.getEmail(),
+                    loginRequest.getPassword()
             );
 
             String jwt = jwtTokenService.generateToken(user);
@@ -52,7 +50,7 @@ public class AuthController {
             // Devolver la respuesta como DTO
             return ResponseEntity.ok(new LoginResponseDTO(
                     jwt,
-                    user.getIdUser(),
+                    user.getId_user(),
                     user.getUsername(),
                     role
             ));

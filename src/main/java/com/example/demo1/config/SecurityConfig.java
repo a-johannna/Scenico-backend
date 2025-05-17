@@ -36,8 +36,8 @@ public class SecurityConfig {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public SecurityConfig(@Lazy JwtAuthenticationFilter jwtAuthenticationFilter,
-                        UserDetailsService userDetailsService,
-                       @Lazy BCryptPasswordEncoder passwordEncoder) {
+                          UserDetailsService userDetailsService,
+                          @Lazy BCryptPasswordEncoder passwordEncoder) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
@@ -46,23 +46,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(AbstractHttpConfigurer::disable)
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/v1/users/register").permitAll()
-                    .requestMatchers(HttpMethod.POST,"/api/v1/users/login").permitAll()
-                    .requestMatchers(HttpMethod.GET,"/api/v1/users/**").permitAll()
-                    .requestMatchers(HttpMethod.GET,"/api/v1/users/uuid/{uuid}").permitAll()
-                    .requestMatchers(HttpMethod.PUT, "api/v1/users/uuid/**").permitAll()
-                    .requestMatchers(HttpMethod.DELETE,"/api/v1/users/uuid/**").permitAll()
-                    .requestMatchers("/api/v1/users/forgot-password").permitAll()
-                    .requestMatchers("/error").permitAll()
-                .anyRequest().authenticated())
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/users/register").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/users/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/portafolios/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/portafolios/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/users/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/users/uuid/{uuid}").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "api/v1/users/uuid/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE,"/api/v1/users/uuid/**").permitAll()
+                        .requestMatchers("/api/v1/users/forgot-password").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api//**").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .anyRequest().authenticated())
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -91,7 +94,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of("http://localhost:4200")); // En producción, especifica los orígenes permitidos
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
-       // configuration.setExposedHeaders(List.of("x-auth-token"));
+        // configuration.setExposedHeaders(List.of("x-auth-token"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

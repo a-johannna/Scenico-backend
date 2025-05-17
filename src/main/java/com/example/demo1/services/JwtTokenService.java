@@ -4,12 +4,15 @@ import com.example.demo1.config.JwtConfiguration;
 import com.example.demo1.models.entidades.UserModel;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Service
 public class JwtTokenService {
@@ -32,7 +35,8 @@ public class JwtTokenService {
         return Jwts.builder()
                 .subject(userModel.getUsername())
                 .claim("role", role)
-                .claim("userId", userModel.getIdUser())
+                .claim("userId", userModel.getId_user())
+                .claim("uuid", userModel.getUuid())
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(key)
@@ -56,4 +60,27 @@ public class JwtTokenService {
                 .getPayload()
                 .getSubject();
     }
+//
+//    public UUID getCurrentUserUuid() {
+//        String token = resolveToken();
+//        Claims claims = getClaims(token);
+//        String uuidString = claims.get("uuid", String.class);
+//        return UUID.fromString(uuidString);
+//    }
+//
+//    public String resolveToken() {
+//        HttpServletRequest request =
+//                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+//                        .getRequest();
+//
+//        String bearerToken = request.getHeader("Authorization");
+//
+//        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+//            return bearerToken.substring(7);
+//        }
+//
+//        return null;
+//    }
+
+
 }

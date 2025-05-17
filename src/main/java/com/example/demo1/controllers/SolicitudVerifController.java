@@ -27,7 +27,7 @@ public class SolicitudVerifController {
 
 
     private final SolicitudVerificacionService solicitudVerificacionService;
-    
+
 
     private ISolucitudVerifRepository solicitudVerifRepository;
 
@@ -41,10 +41,10 @@ public class SolicitudVerifController {
     @PostMapping("/{idUser}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> crearSolicitudVerificacion(@PathVariable Long idUser,@Valid @RequestBody SolicitudVerificacionRequestDTO nuevaSolicitudDTO){
-            Optional<UserModel> user = userRepository.findById(idUser);
-            if(user.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+        Optional<UserModel> user = userRepository.findById(idUser);
+        if(user.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         if (nuevaSolicitudDTO.getArchivoDemoUrl() != null &&
                 !nuevaSolicitudDTO.getArchivoDemoUrl().matches("^(http|https)://.*$")) {
@@ -108,7 +108,7 @@ public class SolicitudVerifController {
         } catch (IllegalStateException e) {
             return ResponseEntity.badRequest().build();
         }
-        
+
 
     }
 

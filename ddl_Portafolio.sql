@@ -16,3 +16,8 @@ CREATE TABLE portafolios
 
 ALTER TABLE portafolios
     ADD CONSTRAINT FK_PORTAFOLIOS_ON_IDUSER FOREIGN KEY (id_user) REFERENCES user (id_user);
+
+select * from user.portafolios;
+
+
+select * from user;

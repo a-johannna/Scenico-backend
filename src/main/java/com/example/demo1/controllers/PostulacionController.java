@@ -27,7 +27,7 @@ public class PostulacionController {
 
     @PostMapping("/{idArtista}/{idOportunidad}")
     public ResponseEntity<?> crearPostulacion(@PathVariable Long idArtista, @PathVariable Long idOportunidad,
-    @RequestBody(required = false) String mensaje)
+                                              @RequestBody(required = false) String mensaje)
     {
         Optional<UserModel> artistaOptional = userRepository.findById(idArtista);
         Optional<Oportunidad> oportunidadOptional = oportunidadRepository.findById(idOportunidad);

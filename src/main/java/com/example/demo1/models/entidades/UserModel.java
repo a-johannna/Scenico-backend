@@ -13,8 +13,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -26,7 +24,8 @@ import java.util.UUID;
 public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idUser;   // ID interno de la base de datos.
+    @Column(name = "id_user")
+    private Long id_user;   // ID interno de la base de datos.
     @Column(name ="uuid", unique = true, nullable = false, updatable = false)
     private UUID uuid;// externo de la base de datos.(Público)
     @PrePersist
@@ -84,15 +83,15 @@ public class UserModel {
     }
 */
 
-@PreUpdate
-protected void onUpdate() {
-    updateAt = LocalDateTime.now();
-}
+    @PreUpdate
+    protected void onUpdate() {
+        updateAt = LocalDateTime.now();
+    }
 
 
     public Boolean isVerified() {
 
-            return Boolean.TRUE.equals(this.verified);
+        return Boolean.TRUE.equals(this.verified);
 
 
     }
