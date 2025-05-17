@@ -7,12 +7,10 @@ import com.example.demo1.models.dtos.SolicitudVerificacion.SolicitudVerificacion
 import com.example.demo1.models.enums.EstadoSolicitud;
 import com.example.demo1.models.entidades.SolicitudVerificacion;
 import com.example.demo1.models.entidades.UserModel;
-import com.example.demo1.models.enums.TypeUser;
 import com.example.demo1.repositories.ISolucitudVerifRepository;
 import com.example.demo1.repositories.IUserRepository;
 import com.example.demo1.services.SolicitudVerificacionService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

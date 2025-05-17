@@ -26,13 +26,12 @@ public class JwtTokenService {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtConfiguration.getJwtExpirationMs());
 
-        String roles = userModel.getRoles().stream()
-                .map(role -> role.getName().name())
-                .collect(Collectors.joining(","));
+        // Obtener el rol directamente desde el enum typeUser
+        String role = userModel.getTypeUser() != null ? userModel.getTypeUser().name() : "USER";
 
         return Jwts.builder()
                 .subject(userModel.getUsername())
-                .claim("roles", roles)
+                .claim("role", role)
                 .claim("userId", userModel.getIdUser())
                 .issuedAt(now)
                 .expiration(expiryDate)

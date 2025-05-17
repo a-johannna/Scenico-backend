@@ -4,7 +4,7 @@ import com.example.demo1.models.entidades.Oportunidad;
 import com.example.demo1.models.entidades.Postulacion;
 import com.example.demo1.models.entidades.UserModel;
 import com.example.demo1.models.enums.EstadoPostulacion;
-import com.example.demo1.models.enums.TypeUser;
+import com.example.demo1.models.enums.RoleName;
 import com.example.demo1.repositories.IOportunidadRepository;
 import com.example.demo1.repositories.IPostulacionRepository;
 import com.example.demo1.repositories.IUserRepository;
@@ -39,7 +39,7 @@ public class PostulacionController {
         UserModel artista = artistaOptional.get();
         Oportunidad oportunidad = oportunidadOptional.get();
 
-        if(artista.getTypeUser() != TypeUser.ARTIST) {
+        if(artista.getTypeUser() != RoleName.ARTIST) {
             return  ResponseEntity.status(403).body("Solo pueden artistas.");
         }
         if(postulacionRepository.findByUsuarioArtistaAndOportunidad(artista, oportunidad).isPresent()) {

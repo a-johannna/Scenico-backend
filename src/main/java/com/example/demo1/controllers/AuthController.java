@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -41,17 +43,20 @@ public class AuthController {
             );
 
             String jwt = jwtTokenService.generateToken(user);
-            String roles = user.getRoles().stream()
-                    .map(role -> role.getName().name())
-                    .reduce((a, b) -> a + "," + b)
-                    .orElse("");
 
+            // Obtener el único rol del usuario
+            String role = user.getTypeUser() != null
+                    ? user.getTypeUser().name()
+                    : "UNASSIGNED";
+
+            // Devolver la respuesta como DTO
             return ResponseEntity.ok(new LoginResponseDTO(
-                jwt,
-                user.getIdUser(),
-                user.getUsername(),
-                roles
+                    jwt,
+                    user.getIdUser(),
+                    user.getUsername(),
+                    role
             ));
+
         }  catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body("Credenciales inválidas");
         } catch (Exception e) {

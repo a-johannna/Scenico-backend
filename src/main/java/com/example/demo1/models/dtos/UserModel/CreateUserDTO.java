@@ -1,6 +1,6 @@
 package com.example.demo1.models.dtos.UserModel;
 
-import com.example.demo1.models.enums.TypeUser;
+import com.example.demo1.models.enums.RoleName;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,7 +34,7 @@ public class CreateUserDTO{
     private String password;
 
     @NotNull(message = "El tipo de usuario es obligatorio")
-    private TypeUser typeUser = TypeUser.USER;
+    private RoleName typeUser = RoleName.USER;
 
     @Pattern(regexp = "^(http|https)://.*$")
     private String photoProfile;

@@ -6,7 +6,7 @@ import com.example.demo1.models.dtos.UserModel.CreateUserDTO;
 import com.example.demo1.models.dtos.UserModel.UpdateUserDTO;
 import com.example.demo1.models.dtos.UserModel.UserResponseDTO;
 import com.example.demo1.models.entidades.UserModel;
-import com.example.demo1.models.enums.TypeUser;
+import com.example.demo1.models.enums.RoleName;
 import com.example.demo1.repositories.IUserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class UserService {
             throw new IllegalStateException("Ya existe un usuario con este nombre de usuario.");
         }
 
-        createUserDTO.setTypeUser(TypeUser.USER);
+        createUserDTO.setTypeUser(RoleName.USER);
         UserModel userModel = userMapper.toEntity(createUserDTO);
         userModel.setUuid(UUID.randomUUID());
 

@@ -5,11 +5,12 @@ import com.example.demo1.models.dtos.SolicitudVerificacion.SolicitudVerificacion
 import com.example.demo1.models.entidades.SolicitudVerificacion;
 import com.example.demo1.models.entidades.UserModel;
 import com.example.demo1.models.enums.EstadoSolicitud;
-import com.example.demo1.models.enums.TypeUser;
+import com.example.demo1.models.enums.RoleName;
 import com.example.demo1.repositories.ISolucitudVerifRepository;
 import com.example.demo1.repositories.IUserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,13 +31,13 @@ public class SolicitudVerificacionService {
     }
 
 
-    private void validarProgresionRoles(TypeUser rolActual, TypeUser rolSolicitado) {
+    private void validarProgresionRoles(RoleName rolActual, RoleName rolSolicitado) {
         if (rolActual == rolSolicitado) {
             throw new IllegalStateException("Ya tienes este rol asignado");
         }
 
         // Un admin no puede cambiar su rol
-        if (rolActual == TypeUser.ADMIN) {
+        if (rolActual == RoleName.ADMIN) {
             throw new IllegalStateException("Un administrador no puede cambiar su rol");
         }
 
@@ -45,12 +46,12 @@ public class SolicitudVerificacionService {
             case ADMIN -> {
             } // Cualquiera puede solicitar ser admin (requiere verificación)
             case ARTIST -> {
-                if (rolActual != TypeUser.USER) {
+                if (rolActual != RoleName.USER) {
                     throw new IllegalStateException("Solo usuarios normales pueden solicitar ser artistas");
                 }
             }
             case ENTERPRISE -> {
-                if (rolActual != TypeUser.USER && rolActual != TypeUser.ARTIST) {
+                if (rolActual != RoleName.USER && rolActual != RoleName.ARTIST) {
                     throw new IllegalStateException("Solo usuarios normales o artistas pueden ser empresa");
                 }
             }
@@ -73,7 +74,7 @@ public class SolicitudVerificacionService {
             throw new IllegalStateException("Usuario no encontrado");
         }
 
-        TypeUser rolSolicitado = solicitud.getRolSolicitado();
+        RoleName rolSolicitado = solicitud.getRolSolicitado();
 
         // 3. Validar rol y solicitudes pendientes
         if (user.getTypeUser() == rolSolicitado) {
@@ -106,7 +107,7 @@ public class SolicitudVerificacionService {
     }
 
 
-    private void actualizarUsuario(UserModel user, TypeUser nuevoRol) {
+    private void actualizarUsuario(UserModel user, RoleName nuevoRol) {
         user.setTypeUser(nuevoRol);
         user.setVerified(true);
         user.setUpdateAt(LocalDateTime.now());

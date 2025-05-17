@@ -26,10 +26,19 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserModel user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
 
-        List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-                .collect(Collectors.toList());
+        if (user.getTypeUser() == null) {
+            throw new IllegalStateException("El usuario no tiene un rol asignado");
+        }
 
-        return new User(user.getEmail(), user.getPassword(), authorities);
+        // Spring Security usa SimpleGrantedAuthority para establecer roles/autoridades
+        List<SimpleGrantedAuthority> authorities = List.of(
+                new SimpleGrantedAuthority("ROLE_" + user.getTypeUser().name())
+        );
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                authorities
+        );
     }
 }
