@@ -12,6 +12,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -36,7 +37,7 @@ public class JwtTokenService {
                 .subject(userModel.getUsername())
                 .claim("role", role)
                 .claim("userId", userModel.getId_user())
-                .claim("uuid", userModel.getUuid())
+                .claim("uuid", userModel.getUuid().toString())
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(key)
@@ -60,27 +61,44 @@ public class JwtTokenService {
                 .getPayload()
                 .getSubject();
     }
-//
-//    public UUID getCurrentUserUuid() {
-//        String token = resolveToken();
-//        Claims claims = getClaims(token);
-//        String uuidString = claims.get("uuid", String.class);
-//        return UUID.fromString(uuidString);
-//    }
-//
-//    public String resolveToken() {
-//        HttpServletRequest request =
-//                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-//                        .getRequest();
-//
-//        String bearerToken = request.getHeader("Authorization");
-//
-//        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-//            return bearerToken.substring(7);
-//        }
-//
-//        return null;
-//    }
+
+    public UUID getUuidFromToken(String token) {
+        Claims claims = getClaims(token);
+        String uuidString = claims.get("uuid", String.class);
+
+        if (uuidString == null) {
+            throw new IllegalStateException("El token no contiene UUID");
+        }
+
+        return UUID.fromString(uuidString);
+    }
+
+    private Claims getClaims(String token) {
+        try {
+            return Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new IllegalStateException("Error al procesar el token: " + e.getMessage());
+        }
+    }
+
+
+    public String resolveToken() {
+        HttpServletRequest request =
+                ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()))
+                        .getRequest();
+
+        String bearerToken = request.getHeader("Authorization");
+
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+
+        return null;
+    }
 
 
 }
