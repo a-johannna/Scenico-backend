@@ -19,6 +19,7 @@ public class UserResponseDTO  {
     private String description;
     private String typeUser;
     private boolean verified;
+    private String token;
 
 
 

@@ -1,5 +1,7 @@
 package com.example.demo1.services;
 
+import com.example.demo1.models.dtos.UserModel.CreateUserDTO;
+import com.example.demo1.models.dtos.UserModel.UserResponseDTO;
 import com.example.demo1.models.entidades.UserModel;
 import com.example.demo1.repositories.IUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,6 +9,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -15,11 +19,13 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
     private final IUserRepository userRepository;
+    private final JwtTokenService jwtTokenService;
 
-    public AuthenticationService(AuthenticationManager authenticationManager, 
-                               IUserRepository userRepository) {
+    public AuthenticationService(AuthenticationManager authenticationManager,
+                                 IUserRepository userRepository, JwtTokenService jwtTokenService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
+        this.jwtTokenService = jwtTokenService;
     }
 
     public UserModel authenticate(String email, String password) {
@@ -34,5 +40,8 @@ public class AuthenticationService {
     public Optional<UserModel> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+
+
 
 }

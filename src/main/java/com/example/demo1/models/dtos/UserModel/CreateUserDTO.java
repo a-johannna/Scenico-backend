@@ -12,7 +12,7 @@ import lombok.Setter;
 @Data
 public class CreateUserDTO{
     @NotBlank(message = "El username es obligatorio")
-    @Size(min = 4, max = 50)
+    @Size(max = 50)
     private String username;
 
     @NotBlank(message = "Este campo es obligatorio.")
@@ -36,10 +36,10 @@ public class CreateUserDTO{
     @NotNull(message = "El tipo de usuario es obligatorio")
     private RoleName typeUser = RoleName.USER;
 
-    @Pattern(regexp = "^(http|https)://.*$")
+   // @Pattern(regexp = "^(http|https)://.*$")
     private String photoProfile;
 
-    @Size(min = 8, max = 255)
+    @Size(max = 255)
     @NotBlank(message = "Inserte una pequeña descripción")
     private String description;
 }

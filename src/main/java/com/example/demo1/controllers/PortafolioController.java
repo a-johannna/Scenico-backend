@@ -108,10 +108,23 @@ public class PortafolioController {
 
     }
 
+    @GetMapping("/user/uuid/{uuid}")
+    public ResponseEntity<List<PortafolioPubliDTO>> obtenerPortafolioPorUuid(@PathVariable UUID uuid) {
+        UserModel user = userService.getByUuid(uuid);
+        List<Portafolio> portafolios = portafolioRepository.findByUserModel(user);
+        List<PortafolioPubliDTO> dtos = portafolios.stream()
+                .map(PortafolioMapper::toPubliDTO)
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
+
+
     /**
      *
      * @param username
      * @return
+     *
+     *
      */
 
     @GetMapping("user/username/{username}")

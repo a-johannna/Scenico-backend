@@ -57,7 +57,7 @@ public class UserModel {
 
     private Boolean verified = false;
     private String location;
-    @Pattern(regexp = "^(http|https)://.*$")
+    //@Pattern(regexp = "^(http|https)://.*$")
     private String photoProfile;
     @CreatedDate
     private LocalDateTime createdAt;
