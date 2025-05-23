@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 
 @Data
@@ -15,6 +16,7 @@ public class UpdateUserDTO {
             message = "La contraseña debe tener al menos 8 caracteres, una letra y un número")
     private String password;
     @Pattern(regexp = "^(http|https)://.*$")
+    @Nullable
     private String photoProfile;
 
     @Size(min = 8, max = 255)

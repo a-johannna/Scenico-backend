@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -95,6 +96,14 @@ public class UserController {
           return ResponseEntity.badRequest().build();
       }
     }
+
+    @PostMapping("/upload-photo")
+    public ResponseEntity<String> uploadPhoto(@RequestParam("file") MultipartFile file,
+                                              @RequestParam("uuid") String uuid) {
+        String url = userService.saveProfileImage(uuid, file);
+        return ResponseEntity.ok(url); // devuelves la URL para mostrar
+    }
+
 }
 
 

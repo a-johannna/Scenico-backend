@@ -5,6 +5,7 @@ import com.example.demo1.models.enums.TipoArchivo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 public class Portafolio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_portafolio")
     private Long idPortafolio;
     private String titulo;
     @Column(columnDefinition = "TEXT")
@@ -25,7 +27,8 @@ public class Portafolio {
     private String urlImagen;
     private String nombreImagen;
     private String descripcionImagen;
-    private String etiquetas;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> etiquetas;
     private LocalDateTime fechaCreacion = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "id_user")

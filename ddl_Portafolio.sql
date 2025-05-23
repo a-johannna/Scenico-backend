@@ -53,3 +53,26 @@ INSERT INTO portafolios (
           25
 
          );
+
+ALTER TABLE portafolio_etiquetas
+    DROP FOREIGN KEY FK9hgawtpi7iv5u9qcne7y9n1x9;
+
+
+ALTER TABLE portafolios
+    MODIFY COLUMN id_portafolio BIGINT NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE portafolio_etiquetas
+    ADD CONSTRAINT FK9hgawtpi7iv5u9qcne7y9n1x9
+        FOREIGN KEY (id_portafolio) REFERENCES portafolios(id_portafolio);
+SHOW COLUMNS FROM portafolios;
+SHOW CREATE TABLE portafolio_etiquetas;
+ALTER TABLE portafolio_etiquetas
+    DROP INDEX FK9hgawtpi7iv5u9qcne7y9n1x9;
+
+ALTER TABLE portafolio_etiquetas
+    ADD CONSTRAINT fk_portafolio_etiqueta
+        FOREIGN KEY (portafolio_id_portafolio)
+            REFERENCES portafolios(id_portafolio)
+            ON DELETE CASCADE;
+

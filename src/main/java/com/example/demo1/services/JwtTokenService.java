@@ -97,8 +97,10 @@ public class JwtTokenService {
             return bearerToken.substring(7);
         }
 
-        return null;
+        // En lugar de devolver null, lanzamos una excepción si el token no se encuentra o es incorrecto.
+        throw new IllegalStateException("Token de autorización no encontrado o con formato incorrecto en la cabecera 'Authorization'.");
     }
-
-
 }
+
+
+

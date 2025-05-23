@@ -64,6 +64,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/users/forgot-password").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/v1/**").permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/api/v1/users/upload-photo/**").permitAll()
+                        .requestMatchers("/api/v1/users/portafolios/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

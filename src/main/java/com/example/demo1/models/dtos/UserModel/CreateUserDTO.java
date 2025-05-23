@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 @Setter
 @Getter
@@ -36,7 +37,8 @@ public class CreateUserDTO{
     @NotNull(message = "El tipo de usuario es obligatorio")
     private RoleName typeUser = RoleName.USER;
 
-   // @Pattern(regexp = "^(http|https)://.*$")
+   @Pattern(regexp = "^(http|https)://.*$")
+   @Nullable
     private String photoProfile;
 
     @Size(max = 255)

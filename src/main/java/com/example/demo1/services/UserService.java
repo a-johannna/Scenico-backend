@@ -10,7 +10,13 @@ import com.example.demo1.models.enums.RoleName;
 import com.example.demo1.repositories.IUserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -111,5 +117,26 @@ public class UserService {
         return userMapper.toResponseDTO(user);
     }
 
-    
+
+    public String saveProfileImage(String uuid, MultipartFile file) {
+        UserModel usuario = userRepository.findByUuid(UUID.fromString(uuid))
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path path = Paths.get("upload-photo/" + fileName);
+
+        try {
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al guardar la imagen", e);
+        }
+
+        // Guardar la URL en el usuario
+        String imageUrl = "http://tuservidor.com/upload-photo/" + fileName;
+        usuario.setPhotoProfile(imageUrl);
+        userRepository.save(usuario);
+
+        return imageUrl;
+    }
+
 }

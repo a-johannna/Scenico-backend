@@ -19,12 +19,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/portafolios")
+@RequestMapping("api/v1/users/portafolios")
 public class PortafolioController {
 
     @Autowired
@@ -223,7 +224,7 @@ public class PortafolioController {
         } else if (tipoArchivo != null) {
             portafolios = portafolioRepository.findByTipoArchivo(tipoArchivo);
         } else if (etiqueta != null) {
-            portafolios = portafolioRepository.findByEtiquetasContainingIgnoreCase(etiqueta);
+            portafolios = portafolioRepository.findByEtiquetaYTipoArchivo(tipoArchivo, etiqueta);
         } else {
             portafolios = portafolioRepository.findAll();
         }
