@@ -146,7 +146,7 @@ public class PortafolioController {
      * @return
      */
 
-    @PutMapping("/{idPortafolio}")
+    @PutMapping("idPortafolio/{idPortafolio}")
     public ResponseEntity<?> actualizarPortafolio(
             @PathVariable Long idPortafolio,
             @RequestBody @Valid PortafolioRequestDTO dto) {
@@ -242,8 +242,8 @@ public class PortafolioController {
      *  La idea es que funcione o modo de explorador donde se muestren todos los portafolios.
      * @return
      */
-    @GetMapping
-    public ResponseEntity<List<PortafolioPubliDTO>> obtenerOportunidadesPublico(){
+    @GetMapping(value = "/all")
+    public ResponseEntity<List<PortafolioPubliDTO>> findAllPortafoliosPublicos(){
         List<Portafolio> listaPortafolios = portafolioRepository.findAll();
         List<PortafolioPubliDTO> portlista = listaPortafolios.stream()
                 .map(PortafolioMapper::toPubliDTO)
