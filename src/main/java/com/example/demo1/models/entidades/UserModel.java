@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -58,6 +59,7 @@ public class UserModel {
     private Boolean verified = false;
     private String location;
     //@Pattern(regexp = "^(http|https)://.*$")
+    @Nullable
     private String photoProfile;
     @CreatedDate
     private LocalDateTime createdAt;
@@ -65,23 +67,6 @@ public class UserModel {
     private LocalDateTime updateAt;
     private String description;
 
-
-/*
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-
-    private Set<Role> roles = new HashSet<>();
-
-    public void addRole(Role role){
-        roles.add(role);
-    }
-
-    public boolean hasRole(RoleName roleName){
-        return roles.stream().anyMatch(r -> r.getName() == roleName);
-
-    }
-*/
 
     @PreUpdate
     protected void onUpdate() {

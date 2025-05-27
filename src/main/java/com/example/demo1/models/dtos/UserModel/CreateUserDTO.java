@@ -37,8 +37,8 @@ public class CreateUserDTO{
     @NotNull(message = "El tipo de usuario es obligatorio")
     private RoleName typeUser = RoleName.USER;
 
-   @Pattern(regexp = "^(http|https)://.*$")
-   @Nullable
+//    @Pattern(regexp = "^(http|https)://.*$")
+    @Nullable
     private String photoProfile;
 
     @Size(max = 255)

@@ -61,26 +61,26 @@ public class OportunidadMapper {
     }
 
     public static OportunidadPublicDTO toOportunidadPublicDTO(Oportunidad oportunidad) {
-      OportunidadPublicDTO dto = new OportunidadPublicDTO();
-      dto.setId(oportunidad.getId());
-      dto.setTitulo(oportunidad.getTitulo());
-      dto.setDescripcion(oportunidad.getDescripcion());
-      dto.setCategoria(oportunidad.getCategoria());
-      dto.setUbicacion(oportunidad.getUbicacion());
-      dto.setFechaCierre(oportunidad.getFechaCierre());
-      dto.setEstadoOportunidad(oportunidad.getEstado());
-      dto.setNombreEmpresa(oportunidad.getUsuarioEmpresa().getUsername());
-      dto.setEmpresaVerificada(oportunidad.getUsuarioEmpresa().isVerified());
-      dto.setFechaPublicacion(oportunidad.getFecha());
+        OportunidadPublicDTO dto = new OportunidadPublicDTO();
+        dto.setId(oportunidad.getId());
+        dto.setTitulo(oportunidad.getTitulo());
+        dto.setDescripcion(oportunidad.getDescripcion());
+        dto.setCategoria(oportunidad.getCategoria());
+        dto.setUbicacion(oportunidad.getUbicacion());
+        dto.setFechaCierre(oportunidad.getFechaCierre());
+        dto.setEstadoOportunidad(oportunidad.getEstado());
+        dto.setNombreEmpresa(oportunidad.getUsuarioEmpresa().getUsername());
+        dto.setEmpresaVerificada(oportunidad.getUsuarioEmpresa().isVerified());
+        dto.setFechaPublicacion(oportunidad.getFecha());
 
-      long diasRestantes = ChronoUnit.DAYS.between(
-              LocalDateTime.now(),
-              oportunidad.getFechaCierre()
-      );
-      dto.setDiasRestantes((int) diasRestantes);
+        long diasRestantes = ChronoUnit.DAYS.between(
+                LocalDateTime.now(),
+                oportunidad.getFechaCierre()
+        );
+        dto.setDiasRestantes((int) diasRestantes);
 
         return  dto;
-        
+
     }
 
     public static void updateFromDTO(Oportunidad oportunidad, @Valid CrearOportunidadDTO dto) {
@@ -92,8 +92,8 @@ public class OportunidadMapper {
         oportunidad.setFechaCierre(dto.getFechaCierre());
 
     }
-    
-   
-    
-    
+
+
+
+
 }

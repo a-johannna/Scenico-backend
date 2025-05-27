@@ -15,7 +15,7 @@ public class UpdateUserDTO {
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
             message = "La contraseña debe tener al menos 8 caracteres, una letra y un número")
     private String password;
-    @Pattern(regexp = "^(http|https)://.*$")
+//    @Pattern(regexp = "^(http|https)://.*$")
     @Nullable
     private String photoProfile;
 

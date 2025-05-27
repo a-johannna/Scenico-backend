@@ -41,3 +41,41 @@ ALTER TABLE user_role
     ADD CONSTRAINT fk_user_role_on_user_model FOREIGN KEY (user_id) REFERENCES user (id_user);
 select * from user;
 
+
+INSERT INTO user (
+    id_user,
+    uuid,
+    username,
+    first_name,
+    last_name,
+    email,
+    password,
+    type_user,
+    verified,
+    location,
+    photo_profile,
+    created_at,
+    update_at,
+    description
+) VALUES (
+             100, -- o el siguiente ID libre en tu sistema
+             UNHEX(REPLACE(UUID(), '-', '')),
+             'empresa_demo',
+             'Empresa',
+             'Demo',
+             'empresa@example.com',
+             'MiContrasenia123',
+             'ENTERPRISE',
+             1,
+             'Madrid',
+             'https://example.com/foto.jpg',
+             NOW(),
+             NOW(),
+             'Empresa dedicada a las artes escénicas'
+         );
+
+select * from user;
+
+UPDATE user
+SET photo_profile = NULL
+WHERE photo_profile = '';

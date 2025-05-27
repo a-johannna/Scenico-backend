@@ -9,5 +9,5 @@ INSERT INTO roles (name) VALUES ('USER');
 
 INSERT INTO roles (name) VALUES ('ENTERPRISE');
 
-select * from user;
+select * from oportunidades;
 
