@@ -46,7 +46,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -60,7 +60,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/api/v1/portafolios/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/users/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/users/uuid/{uuid}").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "api/v1/users/uuid/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/users/uuid/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE,"/api/v1/users/uuid/**").permitAll()
                         .requestMatchers("/api/v1/users/forgot-password").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/v1/**").permitAll()
@@ -92,18 +92,18 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // En producción, especifica los orígenes permitidos
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        // configuration.setExposedHeaders(List.of("x-auth-token"));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // En producción, especifica los orígenes permitidos
+//        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+//        configuration.setAllowedHeaders(List.of("*"));
+//        // configuration.setExposedHeaders(List.of("x-auth-token"));
+//        configuration.setAllowCredentials(true);
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
 
 

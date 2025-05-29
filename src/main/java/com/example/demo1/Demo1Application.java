@@ -16,7 +16,7 @@ public class Demo1Application {
 	@Configuration
 	public static class WebConfig implements WebMvcConfigurer {
 		@Override
-		public void addCorsMappings(CorsRegistry registry) {
+		public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
 			registry.addMapping("/**")
 					.allowedOrigins("https://scenico-community-production.up.railway.app/")
 					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
