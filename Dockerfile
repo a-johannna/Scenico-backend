@@ -1,14 +1,14 @@
-# Imagen base con Java 17
-FROM eclipse-temurin:17-jdk
+# Usa la imagen oficial de OpenJDK como base
+FROM openjdk:17-jdk-slim
 
-# Directorio de trabajo dentro del contenedor
+# Crea el directorio de la app en el contenedor
 WORKDIR /app
 
-# Copia el .jar generado
-COPY target/demo1-0.0.1-SNAPSHOT.jar.original app.jar
+# Copia el .jar desde el build local al contenedor
+COPY target/demo1-0.0.1-SNAPSHOT.jar app.jar
 
-# Expón el puerto 8080 que usa Spring Boot
+# Expón el puerto que usa Spring Boot
 EXPOSE 8080
 
-# Ejecuta el jar
+# Ejecuta el .jar al iniciar el contenedor
 ENTRYPOINT ["java", "-jar", "app.jar"]
