@@ -54,6 +54,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/v1/users/register").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/users/register").permitAll()
+                        .requestMatchers("/ping").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/users/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/portafolios/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/portafolios/**").permitAll()
