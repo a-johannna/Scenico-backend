@@ -1,16 +1,11 @@
 package com.example.demo1.services;
 
-import com.example.demo1.models.dtos.UserModel.CreateUserDTO;
-import com.example.demo1.models.dtos.UserModel.UserResponseDTO;
 import com.example.demo1.models.entidades.UserModel;
 import com.example.demo1.repositories.IUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 

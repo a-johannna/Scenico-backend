@@ -1,7 +1,15 @@
+/**
+ * PortafolioController.java
+ * Proyecto: Scénico -Plataforma para artistas emergentes
+ * Descripción: Controlador REST que gestiona las operaciones CRUD relacionadas con los portafolios artísticos
+ * de los usuarios. Permite crear, actualizar, eliminar, filtrar y listar portafolios públicos.
+ * Autor: Andrea Johanna Villavicencio Lema
+ * Fecha: Mayo de 2025
+ * Email: johannna.villavicencio@gmail.com
+ */
 package com.example.demo1.controllers;
 
 import com.example.demo1.mappers.PortafolioMapper;
-
 import com.example.demo1.models.dtos.ErrorResponseDTO;
 import com.example.demo1.models.dtos.Portafolio.PortafolioRequestDTO;
 import com.example.demo1.models.entidades.Portafolio;
@@ -18,8 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,7 +47,12 @@ public class PortafolioController {
     private final com.example.demo1.services.UserService userService;
 
 
-
+    /**
+     * Constructor que inyecta los servicios necesarios.
+     * @param portafolioService
+     * @param jwtTokenService
+     * @param userService
+     */
     public PortafolioController(PortafolioService portafolioService, JwtTokenService jwtTokenService, com.example.demo1.services.UserService userService) {
         this.portafolioService = portafolioService;
 
@@ -49,52 +60,33 @@ public class PortafolioController {
         this.userService = userService;
     }
 
-//    @PostMapping("userModel/{idUser}")
-//    public ResponseEntity<?> crearPortafolio(@PathVariable Long idUser, @RequestBody PortafolioRequestDTO requestDTO) {
-//        return userRepository.findById(idUser).map(userModel -> {
-//          Portafolio nuevoPortafolio = PortafolioMapper.toEntity(requestDTO);
-//          nuevoPortafolio.setUserModel(userModel);
-//
-//            return ResponseEntity.ok(portafolioRepository.save(nuevoPortafolio));
-//
-//        }).orElse(ResponseEntity.notFound().build());
-//    }
-
-//    @PostMapping("userModel/{id_User}")
-//    public ResponseEntity<?> crearPortafolio(@PathVariable Long id_User,
-//                                             @Valid @RequestBody PortafolioRequestDTO requestDTO) {
-//        return userRepository.findById(id_User).map(user -> {
-//            try {
-//                PortafolioPubliDTO creado = portafolioService.crearPortafolio(requestDTO, user);
-//                return ResponseEntity.status(HttpStatus.CREATED).body(creado);
-//            } catch (Exception e) {
-//                return ResponseEntity.badRequest().body("Error al crear portafolio: " + e.getMessage());
-//            }
-//        }).orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado"));
-//    }
-
+    /**
+     * Crea un nuevo portafolio asociado al usuario autenticado.
+     * @param dto   datos del portafolio
+     * @return      respuesta con DTO público del portafolio creado
+     */
     @PostMapping
     public ResponseEntity<?> crearPortafolio(@RequestBody @Valid PortafolioRequestDTO dto) {
-        // Obtener el token desde el contexto de seguridad
-        String token = jwtTokenService.resolveToken();  // Extrae el token del encabezado Authorization
 
-        // Extraer el UUID del usuario desde el token
+        String token = jwtTokenService.resolveToken();
+
+
         UUID uuid = jwtTokenService.getUuidFromToken(token);
 
-        // Obtener el usuario por UUID
+
         UserModel user = userService.getByUuid(uuid);
 
-        // Crear el portafolio y obtener el DTO público directamente del servicio
+
         PortafolioPubliDTO nuevo = portafolioService.crearPortafolio(dto, user);
 
-        // Devolver respuesta con DTO público
+
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
     /**
-     *
-     * @param idUser
-     * @return
+     *  Obtiene los portafolios de un usuario por ID interno.
+     * @param idUser    Identificador del usuario
+     * @return          lista de portafolios en formato público
      */
 
     @GetMapping("userModel/{idUser}")
@@ -109,6 +101,11 @@ public class PortafolioController {
 
     }
 
+    /**
+     * Obtiene portafolios por UUID de usuario.
+     * @param uuid      uuid UUID del usuario
+     * @return          lista de portafolios públicos
+     */
     @GetMapping("/user/uuid/{uuid}")
     public ResponseEntity<List<PortafolioPubliDTO>> obtenerPortafolioPorUuid(@PathVariable UUID uuid) {
         UserModel user = userService.getByUuid(uuid);
@@ -121,13 +118,10 @@ public class PortafolioController {
 
 
     /**
-     *
-     * @param username
-     * @return
-     *
-     *
+     * Obtiene portafolios por nombre de usuario.
+     * @param username      nombre de usuario
+     * @return              lista de portafolios públicos
      */
-
     @GetMapping("user/username/{username}")
     public ResponseEntity<List<PortafolioPubliDTO>> obtenerPortafolioPorUsername(@PathVariable String username) {
         return userRepository.findByUsername(username).map(userModel -> {
@@ -140,10 +134,10 @@ public class PortafolioController {
     }
 
     /**
-     *
-     * @param idPortafolio
-     * @param dto
-     * @return
+     * Actualiza un portafolio, validando que el usuario autenticado sea el propietario.
+     * @param idPortafolio      identificador del portafolio a actualizar
+     * @param dto               datos nuevos del portafolio
+     * @return                  portafolio actualizado
      */
 
     @PutMapping("idPortafolio/{idPortafolio}")
@@ -151,30 +145,28 @@ public class PortafolioController {
             @PathVariable Long idPortafolio,
             @RequestBody @Valid PortafolioRequestDTO dto) {
 
-        // 1. Obtener UUID del usuario autenticado
+
         String token = jwtTokenService.resolveToken();
         UUID uuid = jwtTokenService.getUuidFromToken(token);
         UserModel user = userService.getByUuid(uuid);
 
-        // 2. Llamar al servicio para actualizar
+
         PortafolioPubliDTO actualizado = portafolioService.actualizarPortafolio(idPortafolio, dto, user);
 
         return ResponseEntity.ok(actualizado);
     }
 
     /**
-     *
-     * @param idPortafolio
-     * @return
+     * Elimina un portafolio solo si pertenece al usuario autenticado.
+     * @param idPortafolio      identificador del portafolio a eliminar
+     * @return                  respuesta con estado 200 o error de permiso
      */
-
     @DeleteMapping("/username/{idPortafolio}")
     public ResponseEntity<?> eliminarPortafolioAuth(@PathVariable Long idPortafolio) {
-        // Obtener UUID del usuario autenticado desde el token
+
         String token = jwtTokenService.resolveToken();
         UUID currentUserUuid = jwtTokenService.getUuidFromToken(token);
 
-        // Buscar el portafolio
         Optional<Portafolio> optionalPortafolio = portafolioRepository.findById(idPortafolio);
 
         if (optionalPortafolio.isEmpty()) {
@@ -183,7 +175,6 @@ public class PortafolioController {
 
         Portafolio portafolio = optionalPortafolio.get();
 
-        // Verificar que el portafolio pertenece al usuario autenticado
         if (!portafolio.getUserModel().getUuid().equals(currentUserUuid)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permiso para eliminar este portafolio.");
         }
@@ -209,12 +200,11 @@ public class PortafolioController {
     }
 
     /**
-     *
-     * @param tipoArchivo
-     * @param etiqueta
-     * @return
+     * Filtra portafolios por tipo de archivo y/o etiqueta.
+     * @param tipoArchivo  tipo de archivo
+     * @param etiqueta     etiqueta parcial
+     * @return             lista de portafolios que coinciden con los filtros
      */
-
     @GetMapping("/buscar")
     public ResponseEntity<List<PortafolioPubliDTO>> buscarPorTipoArchivoAndEtiquetas(@RequestParam(required = false)TipoArchivo tipoArchivo, @RequestParam(required = false) String etiqueta) {
 
@@ -237,10 +227,9 @@ public class PortafolioController {
 
 
     /**
-     *
-     *  Método para obtener todas las portafolios publicas que estén en la base de datos, sin tener que pasar por el servicio.
-     *  La idea es que funcione o modo de explorador donde se muestren todos los portafolios.
-     * @return
+     * Obtiene todos los portafolios disponibles, sin filtros ni autenticación.
+     * Funciona como "modo explorador".
+     * @return      lista completa de portafolios públicos
      */
     @GetMapping(value = "/all")
     public ResponseEntity<List<PortafolioPubliDTO>> findAllPortafoliosPublicos(){
@@ -251,6 +240,11 @@ public class PortafolioController {
                 return ResponseEntity.ok(portlista);
     }
 
+    /**
+     *  Manejador de excepciones para errores de validación.
+     * @param ex excepción capturada
+     * @return DTO de error con el mensaje y tipo
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
         String message = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
