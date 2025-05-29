@@ -5,7 +5,7 @@ FROM eclipse-temurin:17-jdk
 WORKDIR /app
 
 # Copia el .jar generado
-COPY target/demo1-0.0.1-SNAPSHOT.jar app.jar
+COPY target/demo1-0.0.1-SNAPSHOT.jar.original app.jar
 
 # Expón el puerto 8080 que usa Spring Boot
 EXPOSE 8080
