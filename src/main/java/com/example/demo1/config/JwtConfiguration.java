@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Configuration
 public class JwtConfiguration {
-    @Value("${jwt.secret:clave-secreta-muy-segura-123}")
+    @Value("${jwt.secret:UeL53jvW0BpTLmW2ePzR4mKnTz9cQxY3}")
     private String jwtSecret;
 
     @Value("${jwt.expiration:86400000}") // 24 horas en milisegundos
