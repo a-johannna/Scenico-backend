@@ -42,7 +42,7 @@ ALTER TABLE user_role
 select * from user;
 
 
-INSERT INTO user (
+INSERT INTO railway.user (
     id_user,
     uuid,
     username,
@@ -58,20 +58,20 @@ INSERT INTO user (
     update_at,
     description
 ) VALUES (
-             100, -- o el siguiente ID libre en tu sistema
+             1, -- o el siguiente ID libre en tu sistema
              UNHEX(REPLACE(UUID(), '-', '')),
-             'empresa_demo',
-             'Empresa',
-             'Demo',
-             'empresa@example.com',
+             'andreav',
+             'Andrea',
+             'Villavicencio',
+             'usercorreo@example.com',
              'MiContrasenia123',
-             'ENTERPRISE',
-             1,
+             'USER',
+             0,
              'Madrid',
              'https://example.com/foto.jpg',
              NOW(),
              NOW(),
-             'Empresa dedicada a las artes escénicas'
+             'Creación de usuario en Railway'
          );
 
 select * from user;
@@ -79,3 +79,36 @@ select * from user;
 UPDATE user
 SET photo_profile = NULL
 WHERE photo_profile = '';
+
+INSERT INTO railway.user (
+    id_user,
+    uuid,
+    username,
+    first_name,
+    last_name,
+    email,
+    password,
+    type_user,
+    verified,
+    location,
+    photo_profile,
+    created_at,
+    update_at,
+    description
+) VALUES (
+             2,
+             UNHEX(REPLACE(UUID(), '-', '')),
+             'villavicencio',
+             'Andrea',
+             'Villavicencio',
+             'userandrea@example.com',
+             'MiContrasenia123',
+             'USER',
+             b'1',
+             'Madrid',
+             'https://example.com/foto.jpg',
+             NOW(),
+             NOW(),
+             'Creación de usuario en Railway'
+         );
+
