@@ -48,8 +48,8 @@ Su objetivo principal es ofrecer un entorno profesional, seguro y especializado 
 
 ```bash
 # Clona el repositorio
-git clone https://github.com/a-johannna/Scenico.git
-cd scenico
+git clone https://github.com/a-johannna/Scenico-backend.git
+cd scenico-backend
 
 # Configura application.properties con tu base de datos
 spring.datasource.url=jdbc:mysql://localhost:3306/scenico_db
