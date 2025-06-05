@@ -3,8 +3,6 @@ package com.example.demo1.models.dtos.Portafolio;
 import com.example.demo1.models.enums.TipoArchivo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-
-import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
