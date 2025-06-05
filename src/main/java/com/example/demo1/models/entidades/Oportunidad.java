@@ -73,6 +73,10 @@ public class Oportunidad {
      * Fecha de publicación de la oportunidad. Se asigna automáticamente al crearla.
      */
     private LocalDateTime fecha = LocalDateTime.now();
+
+    /**
+     *
+     */
     @Future(message = "La fecha de cierre debe de ser posterior a la fecha actual.")
     private LocalDateTime fechaCierre;
 
@@ -86,7 +90,7 @@ public class Oportunidad {
      * Relación muchos a uno con el usuario de tipo empresa que creó la oportunidad
      */
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_Empresa")
+    @JoinColumn(name = "id_user")
     private UserModel usuarioEmpresa;
 
 }

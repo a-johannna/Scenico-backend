@@ -9,6 +9,7 @@ import java.util.UUID;
 @Getter
 @Data
 public class UserResponseDTO  {
+    private Long id_user;
     private UUID uuid;
     private String username;
     private String firstName;

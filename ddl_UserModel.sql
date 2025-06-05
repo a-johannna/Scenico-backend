@@ -34,15 +34,14 @@ ADD CONSTRAINT uc_users_username UNIQUE (username);
 ALTER TABLE user
     ADD CONSTRAINT uc_users_uuid UNIQUE (uuid);
 
-ALTER TABLE user_role
-    ADD CONSTRAINT fk_user_role_on_role FOREIGN KEY (role_id) REFERENCES roles (id);
 
 ALTER TABLE user_role
     ADD CONSTRAINT fk_user_role_on_user_model FOREIGN KEY (user_id) REFERENCES user (id_user);
+
 select * from user;
 
 
-INSERT INTO railway.user (
+INSERT INTO user.user (
     id_user,
     uuid,
     username,
@@ -58,7 +57,7 @@ INSERT INTO railway.user (
     update_at,
     description
 ) VALUES (
-             1, -- o el siguiente ID libre en tu sistema
+             1,
              UNHEX(REPLACE(UUID(), '-', '')),
              'andreav',
              'Andrea',

@@ -13,8 +13,10 @@ CREATE TABLE oportunidades
     CONSTRAINT pk_oportunidades PRIMARY KEY (id)
 );
 
+ALTER TABLE oportunidades CHANGE id_Empresa id_user BIGINT;
+
 ALTER TABLE oportunidades
-    ADD CONSTRAINT FK_OPORTUNIDADES_ON_IDEMPRESA FOREIGN KEY (id_empresa) REFERENCES user (id_user);
+    ADD CONSTRAINT FK_OPORTUNIDADES_ON_IDEMPRESA FOREIGN KEY (id_user) REFERENCES user (id_user);
 
 INSERT INTO oportunidades (
     titulo,
@@ -25,17 +27,17 @@ INSERT INTO oportunidades (
     fecha,
     fecha_cierre,
     estado_oportunidad,
-    id_empresa
+    id_user
 ) VALUES (
-             'Audición para Obra Teatral',
-             'Buscamos actores para una obra contemporánea. Se requiere experiencia previa en teatro.',
-             'Teatro',
+             'Colaboración son SONY Productions',
+             'Buscamos actores para una película. Se requiere experiencia previa. Perfiles entre 19 y 28 años',
+             'Cine',
              'Experiencia mínima de 2 años en actuación, disponibilidad para ensayos por las tardes.',
-             'Barcelona',
+             'Madrid',
              NOW(),
              DATE_ADD(NOW(), INTERVAL 30 DAY),
-             'ACTIVA',  -- Asegúrate de que este valor coincida con los definidos en tu Enum EstadoOportunidad
-             101
+             'ACTIVA',
+            101
          );
 
 select * from oportunidades;
@@ -49,3 +51,36 @@ WHERE o.titulo = 'Audición para Obra Teatral'
   AND o.ubicacion = 'Barcelona'
   AND o.estado_oportunidad = 'ACTIVA'
   AND o.id_empresa = 101;
+
+SELECT u.*
+FROM user u
+         JOIN oportunidades o ON u.id_user = o.id_empresa
+WHERE o.id_empresa = 101;
+
+
+ALTER TABLE oportunidades
+    CHANGE COLUMN id_empresa id_user BIGINT;
+
+SELECT CONSTRAINT_NAME
+FROM information_schema.KEY_COLUMN_USAGE
+WHERE TABLE_NAME = 'oportunidades'
+  AND COLUMN_NAME = 'id_user';
+
+ALTER TABLE oportunidades
+    DROP FOREIGN KEY FK_OPORTUNIDADES_ON_IDEMPRESA, -- cámbialo por el nombre real si es diferente
+    ADD CONSTRAINT fk_oportunidad_usuario
+        FOREIGN KEY (id_user) REFERENCES user(id_user);
+
+SELECT CONSTRAINT_NAME
+FROM information_schema.KEY_COLUMN_USAGE
+WHERE TABLE_NAME = 'oportunidades'
+  AND CONSTRAINT_SCHEMA = 'user' -- tu nombre de base de datos
+  AND REFERENCED_TABLE_NAME = 'user';
+
+SELECT * FROM oportunidades WHERE id_user NOT IN (SELECT id_user FROM user);
+
+
+
+SHOW CREATE TABLE oportunidades;
+ALTER TABLE oportunidades
+    DROP COLUMN id_empresa;

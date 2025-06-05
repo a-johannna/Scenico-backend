@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     /**
      * Carga el usuario desde la base de datos usando su email.
      * Este método es llamado automáticamente por Spring Security al autenticar.
-     * @param email correo electrónico del usuario que funciona como nombre de usuario
+     * @param username correo electrónico del usuario que funciona como nombre de usuario
      * @return objeto UserDetails con credenciales y roles de usuario
      * @throws UsernameNotFoundException si no se encuentra un usuario con ese email
      * @throws IllegalStateException si el usuario no tine asignado un rol (por el momento no se utiliza)

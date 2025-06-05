@@ -58,7 +58,7 @@ public class JwtTokenService {
         String role = userModel.getTypeUser() != null ? userModel.getTypeUser().name() : "USER";
 
         return Jwts.builder()
-                .subject(userModel.getUsername())
+                .subject(userModel.getEmail())
                 .claim("role", role)
                 .claim("userId", userModel.getId_user())
                 .claim("uuid", userModel.getUuid().toString())

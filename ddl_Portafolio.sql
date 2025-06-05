@@ -20,7 +20,7 @@ ALTER TABLE portafolios
 select * from user.portafolios;
 
 
-select * from portafolios;
+select * from user;
 
 select * FROM portafolios p
                   JOIN user u ON p.id_user = u.id_user
@@ -39,7 +39,7 @@ INSERT INTO portafolios (
     fecha_creacion,
     id_user
 ) VALUES (
-             -- Solo valores
+
     25,
              'Mi primer portafolio',
              'Exploración visual del teatro contemporáneo.',
@@ -54,21 +54,11 @@ INSERT INTO portafolios (
 
          );
 
-ALTER TABLE portafolio_etiquetas
-    DROP FOREIGN KEY FK9hgawtpi7iv5u9qcne7y9n1x9;
 
 
 ALTER TABLE portafolios
     MODIFY COLUMN id_portafolio BIGINT NOT NULL AUTO_INCREMENT;
 
-
-ALTER TABLE portafolio_etiquetas
-    ADD CONSTRAINT FK9hgawtpi7iv5u9qcne7y9n1x9
-        FOREIGN KEY (id_portafolio) REFERENCES portafolios(id_portafolio);
-SHOW COLUMNS FROM portafolios;
-SHOW CREATE TABLE portafolio_etiquetas;
-ALTER TABLE portafolio_etiquetas
-    DROP INDEX FK9hgawtpi7iv5u9qcne7y9n1x9;
 
 ALTER TABLE portafolio_etiquetas
     ADD CONSTRAINT fk_portafolio_etiqueta

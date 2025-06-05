@@ -89,6 +89,10 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/v1/users/upload-photo/**").permitAll()
                         .requestMatchers("/api/v1/users/portafolios/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/users/empresas/oportunidades/empresa/**").hasRole("ENTERPRISE")
+                        .requestMatchers(HttpMethod.POST,"/api/v1/users/empresas/oportunidades/**").hasRole("ENTERPRISE")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/users/empresas/oportunidades/**").hasRole("ENTERPRISE")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/users/empresas/oportunidades/**").hasRole("ENTERPRISE")
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

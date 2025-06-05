@@ -1,5 +1,6 @@
 package com.example.demo1.models.dtos.Oportunidad;
 
+import com.example.demo1.models.enums.EstadoOportunidad;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,11 +27,12 @@ public class CrearOportunidadDTO {
     @Size(min =15, max = 500, message = "Los réquisitos al menos tiene que ocupar 15 carácteres.")
     private String requisitos;
 
+    @NotNull(message = "Este campo es obligatorio.")
+    private EstadoOportunidad estado;
+
+
     @NotBlank(message = "La ubicación es obligatoria")
     private String ubicacion;
 
-    @Future(message = "La fecha de cierre debe ser posterior a la fecha actual")
-    @NotNull(message = "Este campo es obligatorio.")
-    private LocalDateTime fechaCierre;
 
 }

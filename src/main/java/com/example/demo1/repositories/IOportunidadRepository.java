@@ -15,6 +15,7 @@ import com.example.demo1.models.entidades.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Interfaz que extiende JpaRepository para realizar operaciones CRUD y consultas personalizadas sobre Oportunidad.
@@ -22,11 +23,11 @@ import java.util.List;
 public interface IOportunidadRepository extends JpaRepository<Oportunidad, Long> {
 
     /**
-     * Busca todas las oportunidades creadas por una empresa específica.
-     * @param empresa   empresa entidad de usuario con rol de empresa
+     * Busca todas las oportunidades creadas por el UUID del usuario.
+     * @param uuid   identificación único público del usuario
      * @return          lista de oportunidades publicadas por esa empresa
      */
-    List<Oportunidad> findByUsuarioEmpresa(UserModel empresa);
+    List<Oportunidad> findByUsuarioEmpresaUuid(UUID uuid);
 
     /**
      * Busca oportunidades por categoría, ignorando mayúsculas y minúsculas.
