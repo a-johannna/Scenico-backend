@@ -50,7 +50,7 @@ Ofrecer un entorno profesional, seguro y especializado para que artistas emergen
 ```bash
 # Clona el repositorio
 git clone https://github.com/a-johannna/Scenico.git
-cd backend-scenico
+cd scenico
 
 # Configura application.properties con tu base de datos
 spring.datasource.url=jdbc:mysql://localhost:3306/scenico_db
