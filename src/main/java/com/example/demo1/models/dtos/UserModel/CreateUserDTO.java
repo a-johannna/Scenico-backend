@@ -17,7 +17,7 @@ public class CreateUserDTO{
     private String username;
 
     @NotBlank(message = "Este campo es obligatorio.")
-    @Size(min = 4, max = 50)
+    @Size(min = 3, max = 50)
     private String firstName;
 
     @Size(min = 4, max = 50)
