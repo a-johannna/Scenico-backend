@@ -1,8 +1,7 @@
 # 🎭 Scénico - Plataforma para Artistas Emergentes
 
 **Scénico** es una plataforma web desarrollada como Trabajo de Fin de Grado (TFG) para el ciclo de Desarrollo de Aplicaciones Multiplataforma (DAM).
-Su objetivo principal es:
-Ofrecer un entorno profesional, seguro y especializado para que artistas emergentes puedan visibilizar su trabajo y conectar con empresas, agencias, promotores y agentes del sector cultural.
+Su objetivo principal es ofrecer un entorno profesional, seguro y especializado para que artistas emergentes puedan visibilizar su trabajo y conectar con empresas, agencias, promotores y agentes del sector cultural.
 
 ## 🧩 Características principales
 
