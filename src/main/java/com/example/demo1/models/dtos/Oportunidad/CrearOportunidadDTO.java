@@ -25,7 +25,7 @@ public class CrearOportunidadDTO {
     @Size(min =15, max = 500, message = "Los réquisitos al menos tiene que ocupar 15 carácteres.")
     private String requisitos;
 
-    @NotNull(message = "Este campo es obligatorio.")
+
     private EstadoOportunidad estado;
 
 

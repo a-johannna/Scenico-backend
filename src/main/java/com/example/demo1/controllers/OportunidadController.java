@@ -115,7 +115,6 @@ public class OportunidadController {
     }
 
     @GetMapping("/estadoOportunidad/{estadoOportunidad}")
-    /* public List<Oportunidad> findByEstado(@PathVariable EstadoOportunidad estadoOportunidad){return oportunidadRepository.findByEstadoOportunidad(estadoOportunidad); }*/
     public ResponseEntity<List<OportunidadResponseDTO>> findByEstado(@PathVariable EstadoOportunidad estadoOportunidad) {
         List<OportunidadResponseDTO> oportunidades = oportunidadRepository
                 .findByEstado(estadoOportunidad).stream()
@@ -144,61 +143,53 @@ public class OportunidadController {
         return ResponseEntity.ok(oportunidades);
     }
 
-    @PutMapping("idOportunidad/{id}")
+    @PutMapping("/idOportunidad/{id}")
     public ResponseEntity<?> actualizarOportunidad(
             @PathVariable Long id,
-            @RequestBody @Valid CrearOportunidadDTO dto) {
+            @Valid @RequestBody CrearOportunidadDTO dto) {
 
-        // 1. Extraer el token (por ejemplo del header "Authorization")
+
         String token = jwtTokenService.resolveToken();
         if (token == null) {
-            // No viene token o es inválido
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ErrorResponseDTO("Token no proporcionado o inválido", "UNAUTHORIZED"));
+                    .body(new ErrorResponseDTO("Token no proporcionado", "UNAUTHORIZED"));
         }
 
-        // 2. Obtener el UUID del usuario logueado
+
         UUID uuidUsuario;
         try {
             uuidUsuario = jwtTokenService.getUuidFromToken(token);
-        } catch (Exception ex) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ErrorResponseDTO("Token inválido o expirado", "UNAUTHORIZED"));
         }
 
-        // 3. Buscar el UserModel correspondiente a ese UUID
         UserModel currentUser = userService.getByUuid(uuidUsuario);
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ErrorResponseDTO("Usuario no encontrado para el token proporcionado", "UNAUTHORIZED"));
+                    .body(new ErrorResponseDTO("Usuario no encontrado", "UNAUTHORIZED"));
         }
 
-        // 4. Obtener la oportunidad a editar
-        Optional<Oportunidad> maybeOport = oportunidadService.findById(id);
-        if (maybeOport.isEmpty()) {
+
+        Optional<Oportunidad> opt = oportunidadService.findById(id);
+        if (opt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        Oportunidad oportunidad = opt.get();
 
-        Oportunidad oportunidad = maybeOport.get();
 
-        // 5. Comprobar que el usuario es de tipo ENTERPRISE y que coincide con quien creó la oportunidad
-//        //    (se podría omitir la comprobación de ENTERPRISE si basta con validar que el UUID coincide)
-//        if (currentUser.getTypeUser() != RoleName.ENTERPRISE ||
-//                !oportunidad.getUsuarioEmpresa().getUuid().equals(currentUser.getUuid())) {
-//            return ResponseEntity. status(HttpStatus.FORBIDDEN)
-//                    .body(new ErrorResponseDTO("No autorizado para actualizar esta oportunidad", "FORBIDDEN"));
-//        }
+        if (currentUser.getTypeUser() != RoleName.ENTERPRISE
+                || !oportunidad.getUsuarioEmpresa().getUuid().equals(uuidUsuario)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ErrorResponseDTO("No autorizado para actualizar esta oportunidad", "FORBIDDEN"));
+        }
 
-        // 6. Llamamos al servicio para que haga el mapeo y guarde los cambios
-        //    El servicio puede encargarse de copiar solo los campos editables
-        Oportunidad updated = oportunidadService.actualizarDesdeDTO(oportunidad, dto);
 
-        // 7. Convertir la entidad actualizada a un DTO de respuesta
-        OportunidadResponseDTO respuesta = OportunidadMapper.toResponseDTO(updated);
+        Oportunidad actualizado = oportunidadService.actualizarDesdeDTO(oportunidad, dto);
 
-        return ResponseEntity.ok(respuesta);
+
+        return ResponseEntity.ok(OportunidadMapper.toResponseDTO(actualizado));
     }
-
 
 
     @DeleteMapping("/{id}")
