@@ -14,7 +14,7 @@ public class CrearOportunidadDTO {
     private String titulo;
 
     @NotBlank(message = "La descripción es obligatoria")
-    @Size(min =30, max = 2000, message = "La descripción debe de tener al menos 30 carácteres.")
+    @Size(min =1, max = 2000, message = "La descripción debe de tener al menos un carácter.")
     private String descripcion;
 
     @NotBlank(message = "La categoría es obligatoria")

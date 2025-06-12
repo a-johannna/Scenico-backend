@@ -25,18 +25,19 @@ import java.util.UUID;
 public interface IUserRepository extends JpaRepository<UserModel, Long> {
 
     /**
+     * Busca un usuario por el identificador UUID.
+     * @param uuid identificador público del usuario.
+     * @return un Optional si con el usuario si se encuentra
+     */
+    Optional<UserModel> findByUuid(UUID uuid);
+
+    /**
      * Busca según el nombre de usuario (username)
      * @param username nombre de usuario a buscar
      * @return un Optional con el usuario si existe
      */
     Optional<UserModel> findByUsername(String username);
 
-    /**
-     * Busca un usuario por el identificador UUID.
-     * @param uuid identificador público del usuario.
-     * @return un Optional si con el usuario si se encuentra
-     */
-    Optional<UserModel> findByUuid(UUID uuid);
 
     /**
      *  Verifica si existe un usuario con el email especificado.

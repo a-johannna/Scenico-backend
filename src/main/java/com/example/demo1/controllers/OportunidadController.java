@@ -24,6 +24,7 @@ import com.example.demo1.mappers.OportunidadMapper;
 import com.example.demo1.services.JwtTokenService;
 import com.example.demo1.services.OportunidadService;
 import com.example.demo1.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,10 +60,17 @@ public class OportunidadController {
         this.userService = userService;
     }
 
-    @PostMapping("/{usuarioEmpresa}")
-    public ResponseEntity<?> crearOportunidad(@PathVariable Long usuarioEmpresa, @Valid @RequestBody CrearOportunidadDTO dto) {
+    @PostMapping
+    public ResponseEntity<?> crearOportunidad(@Valid @RequestBody CrearOportunidadDTO dto, HttpServletRequest request) {
+        String token = jwtTokenService.resolveToken();
+        if (token == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponseDTO("Token no proporcionado", "UNAUTHORIZED"));
+        }
+        UUID uuid = jwtTokenService.getUuidFromToken(token);
 
-        return userRepository.findById(usuarioEmpresa)
+        return userRepository.findByUuid(uuid)
                 .map(empresaUser -> {
                     if (empresaUser.getTypeUser() != RoleName.ENTERPRISE) {
                         return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -71,8 +79,11 @@ public class OportunidadController {
                     Oportunidad nuevaOportunidad = OportunidadMapper.toEntity(dto);
                     nuevaOportunidad.setUsuarioEmpresa(empresaUser);
                     nuevaOportunidad.setFechaCierre(LocalDateTime.now().plusDays(30));
+
                     Oportunidad savedOportunidad = oportunidadRepository.save(nuevaOportunidad);
-                    return ResponseEntity.ok(OportunidadMapper.toResponseDTO(savedOportunidad));
+                    return ResponseEntity
+                            .status(HttpStatus.CREATED)
+                            .body(OportunidadMapper.toResponseDTO(savedOportunidad));
                 })
                 .orElse(ResponseEntity.notFound().build());
 
