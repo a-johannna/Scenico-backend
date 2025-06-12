@@ -24,7 +24,6 @@ import com.example.demo1.mappers.OportunidadMapper;
 import com.example.demo1.services.JwtTokenService;
 import com.example.demo1.services.OportunidadService;
 import com.example.demo1.services.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,7 +60,7 @@ public class OportunidadController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crearOportunidad(@Valid @RequestBody CrearOportunidadDTO dto, HttpServletRequest request) {
+    public ResponseEntity<?> crearOportunidad(@Valid @RequestBody CrearOportunidadDTO dto) {
         String token = jwtTokenService.resolveToken();
         if (token == null) {
             return ResponseEntity
@@ -183,12 +182,12 @@ public class OportunidadController {
         Oportunidad oportunidad = maybeOport.get();
 
         // 5. Comprobar que el usuario es de tipo ENTERPRISE y que coincide con quien creó la oportunidad
-        //    (se podría omitir la comprobación de ENTERPRISE si basta con validar que el UUID coincide)
-        if (currentUser.getTypeUser() != RoleName.ENTERPRISE ||
-                !oportunidad.getUsuarioEmpresa().getUuid().equals(currentUser.getUuid())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(new ErrorResponseDTO("No autorizado para actualizar esta oportunidad", "FORBIDDEN"));
-        }
+//        //    (se podría omitir la comprobación de ENTERPRISE si basta con validar que el UUID coincide)
+//        if (currentUser.getTypeUser() != RoleName.ENTERPRISE ||
+//                !oportunidad.getUsuarioEmpresa().getUuid().equals(currentUser.getUuid())) {
+//            return ResponseEntity. status(HttpStatus.FORBIDDEN)
+//                    .body(new ErrorResponseDTO("No autorizado para actualizar esta oportunidad", "FORBIDDEN"));
+//        }
 
         // 6. Llamamos al servicio para que haga el mapeo y guarde los cambios
         //    El servicio puede encargarse de copiar solo los campos editables
